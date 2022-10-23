@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import './App.css';
 
 function App() {
 
+  const auth = getAuth()
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [authorizedUser, setAuthorizedUser] = useState<any>(false || sessionStorage.getItem("accessToken"))
 
   const emailChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value)
@@ -16,12 +19,20 @@ function App() {
   }
 
   const signInWithPassword = () => {
-    const auth = getAuth()
+
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in 
         const user = userCredential.user;
-        console.log(user)
+        if (user) {
+          user.getIdToken().then((tkn) => {
+            // set access token in session storage
+            sessionStorage.setItem("accessToken", tkn);
+            setAuthorizedUser(true);
+            setEmail('')
+            setPassword('')
+          })
+        }
         // ...
       })
       .catch((error) => {
@@ -30,21 +41,46 @@ function App() {
       });
   }
 
+  function logoutUser() {
+    signOut(auth).then(() => {
+      // clear session storage
+      sessionStorage.clear();
+      setAuthorizedUser(false);
+      // window.location.replace("/");
+      alert('Logged Out Successfully');
+    }).catch((error) => {
+      // An error happened.
+      alert(error);
+    });
+  }
+
   return (
     <>
       <h1>Journey Map</h1>
-      <div>
-        <label htmlFor="email">email</label>
-        <input onChange={emailChanged} value={email} id="email" type="email" />
-      </div>
 
-      <div>
-        <label htmlFor="password">password</label>
-        <input onChange={passwordChanged} value={password} id="password" type="text" />
-      </div>
+      {authorizedUser ? (
+        <>
+          <p>Authorized user</p>
+          <button onClick={logoutUser}>Logout Button</button>
+        </>
+      ) :
 
-      <button onClick={signInWithPassword}>Sign in with email and password</button>
+        <>
+          <div>
+            <label htmlFor="email">email</label>
+            <input onChange={emailChanged} value={email} id="email" type="email" />
+          </div>
+
+          <div>
+            <label htmlFor="password">password</label>
+            <input onChange={passwordChanged} value={password} id="password" type="text" />
+          </div>
+
+          <button onClick={signInWithPassword}>Sign in with email and password</button>
+        </>
+      }
     </>
+
   );
 }
 
