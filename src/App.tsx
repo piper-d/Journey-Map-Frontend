@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import Tasks from './components/Tasks';
 import './App.css';
 
 function App() {
@@ -61,6 +62,8 @@ function App() {
       {authorizedUser ? (
         <>
           <p>Authorized user</p>
+          <h3>Tasks</h3>
+          <Tasks token={sessionStorage.getItem("accessToken")} />
           <button onClick={logoutUser}>Logout Button</button>
         </>
       ) :
