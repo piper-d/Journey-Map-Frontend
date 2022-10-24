@@ -3,16 +3,16 @@ import axios from 'axios'
 import { useEffect, useState } from 'react';
 
 export default function Tasks(props: any) {
-    const [tasks, setTasks] = useState<any[]>([])
+    const [trip, setTrip] = useState<any>([])
 
     async function fetchData(token: any) {
-        const response = await axios.get('http://localhost:8080/dummy', {
+        console.log("here")
+        const response = await axios.get(`http://localhost:8080/trips/wbZNeoXsyHSIbETgmapy`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
-        setTasks(response.data.tasks)
-        console.log(response)
+        console.log(response.data)
     }
 
     useEffect(() => {
@@ -22,8 +22,8 @@ export default function Tasks(props: any) {
     }, []);
 
     return (
-        <div>{tasks.map((task, index) => (
-            <p key={index}>{task.title}</p>
-        ))}</div>
+        <div>
+            <p>Check your console!</p>
+        </div>
     )
 }
