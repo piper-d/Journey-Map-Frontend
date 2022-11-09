@@ -1,1 +1,1 @@
-# X-35-Frontend
+# Journey Map frontend
