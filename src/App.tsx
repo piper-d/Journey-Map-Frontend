@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {doc, setDoc} from 'firebase/firestore'
+import {collection} from 'firebase/firestore/lite'
+import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword} from "firebase/auth";
 import Tasks from './components/Tasks';
+import db from "./config/firebase.config"
 import './App.css';
 
 function App() {
 
   const auth = getAuth()
+
+  const [emailr, setEmailr] = useState("eminmammadzada.b@gmail.com")
+  const [passwordr, setPasswordr] = useState("admin123")
+  const [username, setUsername] = useState("emin")
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -19,6 +26,19 @@ function App() {
     setPassword(event.target.value)
   }
 
+  const emailRegisterChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmailr(event.target.value)
+  }
+
+  const passwordRegisterChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPasswordr(event.target.value)
+  }
+
+  const usernameRegisterChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value)
+  }
+  
+
   const signInWithPassword = () => {
 
     signInWithEmailAndPassword(auth, email, password)
@@ -29,6 +49,7 @@ function App() {
           user.getIdToken().then((tkn) => {
             // set access token in session storage
             sessionStorage.setItem("accessToken", tkn);
+            
             setAuthorizedUser(true);
             setEmail('')
             setPassword('')
@@ -41,6 +62,33 @@ function App() {
         const errorMessage = error.message;
       });
   }
+  
+
+const signUpWithPassword = () => {
+  createUserWithEmailAndPassword(auth, emailr, passwordr)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user)
+
+    if (user) {
+          user.getIdToken().then((tkn) => {
+            // set access token in session storage
+            sessionStorage.setItem("accessToken", tkn);
+            setAuthorizedUser(true);
+            setDoc(doc(db, "Users", user.uid), {username: username, email: emailr})
+          })
+    }
+    
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(error)
+  });
+}
+
+
 
   function logoutUser() {
     signOut(auth).then(() => {
@@ -66,8 +114,7 @@ function App() {
           <Tasks token={sessionStorage.getItem("accessToken")} />
           <button onClick={logoutUser}>Logout Button</button>
         </>
-      ) :
-
+      ) : 
         <>
           <div>
             <label htmlFor="email">email</label>
@@ -80,11 +127,32 @@ function App() {
           </div>
 
           <button onClick={signInWithPassword}>Sign in with email and password</button>
-        </>
+
+          {/* Register part */}
+          <hr/>
+          <hr/>
+
+          <div>
+            <label htmlFor="username">username Register</label>
+            <input onChange={usernameRegisterChanged} value={username} id="username" type="email" />
+          </div>
+          
+          <div>
+            <label htmlFor="emailr">email Register</label>
+            <input onChange={emailRegisterChanged} value={emailr} id="emailr" type="email" />
+          </div>
+
+          <div>
+            <label htmlFor="passwordr">password Register</label>
+            <input onChange={passwordRegisterChanged} value={passwordr} id="passwordr" type="text" />
+          </div>
+
+          <button onClick={signUpWithPassword}>Sign up with email and password</button>
+          
+         </>
       }
     </>
-
   );
 }
-
+ 
 export default App;
