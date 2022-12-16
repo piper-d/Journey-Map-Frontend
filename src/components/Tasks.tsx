@@ -7,7 +7,7 @@ export default function Tasks(props: any) {
 
     async function fetchData(token: any) {
         console.log("here")
-        const response = await axios.get(`http://localhost:8080/trips/wbZNeoXsyHSIbETgmapy`, {
+        const response = await axios.get(`http://localhost:8080/trips/`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

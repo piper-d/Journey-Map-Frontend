@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import {doc, setDoc} from 'firebase/firestore'
-import {collection} from 'firebase/firestore/lite'
-import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword} from "firebase/auth";
+import { doc, setDoc } from 'firebase/firestore'
+import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "firebase/auth";
 import Tasks from './components/Tasks';
 import db from "./config/firebase.config"
 import './App.css';
@@ -37,7 +36,7 @@ function App() {
   const usernameRegisterChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value)
   }
-  
+
 
   const signInWithPassword = () => {
 
@@ -49,7 +48,7 @@ function App() {
           user.getIdToken().then((tkn) => {
             // set access token in session storage
             sessionStorage.setItem("accessToken", tkn);
-            
+
             setAuthorizedUser(true);
             setEmail('')
             setPassword('')
@@ -62,31 +61,26 @@ function App() {
         const errorMessage = error.message;
       });
   }
-  
 
-const signUpWithPassword = () => {
-  createUserWithEmailAndPassword(auth, emailr, passwordr)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    console.log(user)
 
-    if (user) {
-          user.getIdToken().then((tkn) => {
-            // set access token in session storage
-            sessionStorage.setItem("accessToken", tkn);
-            setAuthorizedUser(true);
-            setDoc(doc(db, "Users", user.uid), {username: username, email: emailr})
-          })
+  const signUpWithPassword = async () => {
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, emailr, passwordr)
+      const user = userCredential.user;
+
+      if (user) {
+        let tkn = await user.getIdToken()
+        // set access token in session storage
+        sessionStorage.setItem("accessToken", tkn);
+        setAuthorizedUser(true);
+        console.log(user)
+        await setDoc(doc(db, "Users", user.uid), { username: username, email: emailr, Trips: [] })
+      }
+    } catch (error) {
+      console.log(error)
     }
-    
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(error)
-  });
-}
+  }
 
 
 
@@ -114,7 +108,7 @@ const signUpWithPassword = () => {
           <Tasks token={sessionStorage.getItem("accessToken")} />
           <button onClick={logoutUser}>Logout Button</button>
         </>
-      ) : 
+      ) :
         <>
           <div>
             <label htmlFor="email">email</label>
@@ -129,14 +123,14 @@ const signUpWithPassword = () => {
           <button onClick={signInWithPassword}>Sign in with email and password</button>
 
           {/* Register part */}
-          <hr/>
-          <hr/>
+          <hr />
+          <hr />
 
           <div>
             <label htmlFor="username">username Register</label>
             <input onChange={usernameRegisterChanged} value={username} id="username" type="email" />
           </div>
-          
+
           <div>
             <label htmlFor="emailr">email Register</label>
             <input onChange={emailRegisterChanged} value={emailr} id="emailr" type="email" />
@@ -148,11 +142,11 @@ const signUpWithPassword = () => {
           </div>
 
           <button onClick={signUpWithPassword}>Sign up with email and password</button>
-          
-         </>
+
+        </>
       }
     </>
   );
 }
- 
+
 export default App;
