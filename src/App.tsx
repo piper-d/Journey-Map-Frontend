@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { doc, setDoc } from 'firebase/firestore'
 import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "firebase/auth";
-import Tasks from './components/Tasks';
+import Tasks from './components/Tasks'; 
+import Nav from './components/Nav/Nav'
 import db from "./config/firebase.config"
 import './App.css';
 
@@ -99,6 +100,7 @@ function App() {
 
   return (
     <>
+      <Nav/>
       <h1>Journey Map</h1>
 
       {authorizedUser ? (
