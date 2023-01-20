@@ -1,13 +1,42 @@
 import React from 'react';
+import { ThemeProvider, CssBaseline, PaletteMode, createTheme } from '@mui/material';
+
 import './App.css';
 
 import Login from './components/Login/login';
+import { darkTheme } from './themes/dark';
+import { lightTheme } from './themes/light';
+import { ColorContext } from './ColorContext';
+import { SwitchModeButton } from './components/SwitchModeButton/SwitchModeButton';
 
-const App: React.FC<{}> = () => {
+function App() {
+  const [mode, setMode] = React.useState<PaletteMode>("light");
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode: PaletteMode) => 
+          prevMode === "light" ? "dark" : "light"
+        );
+      },
+    }),
+    []
+  )
+
+  const theme = React.useMemo(
+    () => createTheme(mode === "light" ? lightTheme : darkTheme),
+    [mode]
+  )
+
   return (
-    <>
-      <Login />
-    </>
+    <ColorContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline enableColorScheme />
+        <Login />
+        <SwitchModeButton />
+
+      </ThemeProvider>
+    </ColorContext.Provider>
+
   )
 }
 
