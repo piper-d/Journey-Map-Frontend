@@ -4,6 +4,7 @@ import { ThemeProvider, CssBaseline, PaletteMode, createTheme } from '@mui/mater
 import './App.css';
 
 import Login from './components/Login/login';
+import NavBar from './components/Nav/NavBar'
 import { darkTheme } from './themes/dark';
 import { lightTheme } from './themes/light';
 import { ColorContext } from './ColorContext';
@@ -31,6 +32,7 @@ function App() {
     <ColorContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline enableColorScheme />
+        <NavBar />
         <Login />
         <SwitchModeButton />
 

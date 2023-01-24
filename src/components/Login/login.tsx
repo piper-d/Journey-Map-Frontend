@@ -3,7 +3,6 @@ import { doc, setDoc } from 'firebase/firestore'
 import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "firebase/auth";
 import { Button } from "@mui/material";
 import Tasks from '../../components/Tasks';
-import Nav from '../../components/Nav/Nav'
 import db from "../../config/firebase.config"
 import '../../App.css';
 
@@ -101,7 +100,6 @@ const Login: React.FC<{}> = () => {
 
     return (
         <>
-            <Nav />
             <h1>Journey Map</h1>
 
             <Button color="primary" variant="contained">
