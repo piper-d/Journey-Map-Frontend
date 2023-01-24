@@ -13,6 +13,8 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
+import { SwitchModeButton } from '../SwitchModeButton/SwitchModeButton';
+
 const pages = ['About', 'Contact', 'Login', 'Register'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Login'];
 
@@ -124,6 +126,7 @@ function ResponsiveAppBar() {
                             </Button>
                         ))}
                     </Box>
+                    <SwitchModeButton />
 
                     {/* <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">

@@ -34,7 +34,6 @@ function App() {
         <CssBaseline enableColorScheme />
         <NavBar />
         <Login />
-        <SwitchModeButton />
 
       </ThemeProvider>
     </ColorContext.Provider>

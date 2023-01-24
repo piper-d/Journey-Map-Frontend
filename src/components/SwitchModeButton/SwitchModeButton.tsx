@@ -13,8 +13,7 @@ export const SwitchModeButton = () => {
         <Box
             sx={{
                 display: "flex",
-                minHeight: "100vh",
-                width: "100%",
+                minHeight: "80px",
                 alignItems: "center",
                 justifyContent: "center",
             }}

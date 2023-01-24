@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { doc, setDoc } from 'firebase/firestore'
 import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "firebase/auth";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import Tasks from '../../components/Tasks';
 import db from "../../config/firebase.config"
 import '../../App.css';
@@ -100,14 +100,6 @@ const Login: React.FC<{}> = () => {
 
     return (
         <>
-            <h1>Journey Map</h1>
-
-            <Button color="primary" variant="contained">
-                Primary
-            </Button>
-            <Button color="secondary" variant="contained">
-                Secondary
-            </Button>
 
             {authorizedUser ? (
                 <>
@@ -118,7 +110,31 @@ const Login: React.FC<{}> = () => {
                 </>
             ) :
                 <>
-                    <div>
+                   <form>
+                    <TextField 
+                        label="Email"
+                        onChange={emailChanged}
+                        value={email}
+                        id='email'
+                        type="email"
+                        variant="outlined"
+                        fullWidth
+                    />
+                    <TextField
+                        label="Password"
+                        onChange={passwordChanged}
+                        value={password}
+                        id='password'
+                        type="password"
+                        variant="outlined"
+                        fullWidth
+                    />
+
+                    <Button variant="contained" color="primary" onClick={signInWithPassword}>
+                        Login
+                    </Button>
+                   </form>
+                    {/* <div>
                         <label htmlFor="email">email</label>
                         <input onChange={emailChanged} value={email} id="email" type="email" />
                     </div>
@@ -128,13 +144,46 @@ const Login: React.FC<{}> = () => {
                         <input onChange={passwordChanged} value={password} id="password" type="text" />
                     </div>
 
-                    <button onClick={signInWithPassword}>Sign in with email and password</button>
+                    <button onClick={signInWithPassword}>Sign in with email and password</button> */}
 
                     {/* Register part */}
                     <hr />
                     <hr />
 
-                    <div>
+                    <form>
+                        <TextField
+                            label="Username"
+                            onChange={usernameRegisterChanged}
+                            value={username}
+                            id='username'
+                            type="username"
+                            variant="outlined"
+                            fullWidth
+                        />
+                        <TextField
+                            label="Email"
+                            onChange={emailRegisterChanged}
+                            value={emailr}
+                            id='emailr'
+                            type="email"
+                            variant="outlined"
+                            fullWidth
+                        />
+                        <TextField
+                            label="Password"
+                            onChange={passwordRegisterChanged}
+                            value={passwordr}
+                            id='passwordr'
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                        />
+                        <Button variant="contained" color="primary" onClick={signUpWithPassword}>
+                            Login
+                        </Button>
+                    </form>
+
+                    {/* <div>
                         <label htmlFor="username">username Register</label>
                         <input onChange={usernameRegisterChanged} value={username} id="username" type="email" />
                     </div>
@@ -149,7 +198,7 @@ const Login: React.FC<{}> = () => {
                         <input onChange={passwordRegisterChanged} value={passwordr} id="passwordr" type="text" />
                     </div>
 
-                    <button onClick={signUpWithPassword}>Sign up with email and password</button>
+                    <button onClick={signUpWithPassword}>Sign up with email and password</button> */}
 
                 </>
             }
