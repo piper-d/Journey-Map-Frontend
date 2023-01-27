@@ -14,11 +14,13 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
 import { SwitchModeButton } from '../SwitchModeButton/SwitchModeButton';
+import { useNavigate } from 'react-router-dom';
 
-const pages = ['About', 'Contact', 'Login', 'Register'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Login'];
 
 function ResponsiveAppBar() {
+    const navigate = useNavigate();
+
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -36,6 +38,19 @@ function ResponsiveAppBar() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const about = () => {
+        navigate('/about');
+    }
+    const contact = () => {
+        navigate('/contact');
+    }
+    const login = () => {
+        navigate('/login');
+    }
+    const register = () => {
+        navigate('/register');
+    }
 
     return (
         <AppBar position="static">
@@ -89,11 +104,18 @@ function ResponsiveAppBar() {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem onClick={about}>
+                                <Typography textAlign="center">About</Typography>
+                            </MenuItem>
+                            <MenuItem onClick={contact}>
+                                <Typography textAlign="center">Contact Us</Typography>
+                            </MenuItem>
+                            <MenuItem onClick={login}>
+                                <Typography textAlign="center">Login</Typography>
+                            </MenuItem>
+                            <MenuItem onClick={register}>
+                                <Typography textAlign="center">Register</Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -116,15 +138,30 @@ function ResponsiveAppBar() {
                         Journey Map
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
-                        ))}
+                        <Button
+                            onClick={about}
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                        >
+                            About
+                        </Button>
+                        <Button
+                            onClick={contact}
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                        >
+                            Contact Us
+                        </Button>
+                        <Button
+                            onClick={login}
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                        >
+                            Login
+                        </Button>
+                        <Button
+                            onClick={register}
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                        >
+                            Register
+                        </Button>
                     </Box>
                     <SwitchModeButton />
 
