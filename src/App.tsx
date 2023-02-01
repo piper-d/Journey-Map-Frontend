@@ -15,8 +15,8 @@ import LayoutComponent from './components/Layout/Layout';
 import Home from './components/Home/Home';
 import About from './components/About/About';
 import Contact from './components/Contact/Contact';
-
-
+import SignIn from './components/Login/signin';
+import SignUp from './components/Login/signup';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -44,7 +44,8 @@ function App() {
           <Routes>
             <Route path='/' element={<LayoutComponent />}>
               <Route index element={<Home />} />
-              <Route path ='login' element={<Login />} />
+              <Route path ='login' element={<SignIn />} />
+              <Route path='register' element={<SignUp />} />
               <Route path='about' element={<About />} />
               <Route path='contact' element={<Contact />} />
             </Route>

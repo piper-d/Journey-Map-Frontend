@@ -15,11 +15,12 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 import { SwitchModeButton } from '../SwitchModeButton/SwitchModeButton';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@mui/material';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Login'];
 
 function ResponsiveAppBar() {
     const navigate = useNavigate();
+    const theme = useTheme();
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
