@@ -1,152 +1,98 @@
 import React, { useState } from 'react';
-import { doc, setDoc } from 'firebase/firestore'
-import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "firebase/auth";
-import Tasks from './components/Tasks';
-import db from "./config/firebase.config"
+import { ThemeProvider, CssBaseline, PaletteMode, createTheme } from '@mui/material';
+
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import './App.css';
 
+import Login from './components/Login/login';
+import { darkTheme } from './themes/dark';
+import { lightTheme } from './themes/light';
+import { ColorContext } from './ColorContext';
+
+import LayoutComponent from './components/Layout/Layout';
+import Home from './components/Home/Home';
+import About from './components/About/About';
+import Contact from './components/Contact/Contact';
+import SignIn from './components/Login/signin';
+import SignUp from './components/Login/signup';
+
 function App() {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const [mode, setMode] = useLocalStorage<string>("mode", prefersDarkMode ? "dark" : "light");
 
-  const auth = getAuth()
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode(mode === "light" ? "dark" : "light");
+      },
+    }),
+    [mode]
+  )
 
-  const [emailr, setEmailr] = useState("eminmammadzada.b@gmail.com")
-  const [passwordr, setPasswordr] = useState("admin123")
-  const [username, setUsername] = useState("emin")
-
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [authorizedUser, setAuthorizedUser] = useState<any>(false || sessionStorage.getItem("accessToken"))
-
-  const emailChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value)
-  }
-
-  const passwordChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value)
-  }
-
-  const emailRegisterChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmailr(event.target.value)
-  }
-
-  const passwordRegisterChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordr(event.target.value)
-  }
-
-  const usernameRegisterChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value)
-  }
-
-
-  const signInWithPassword = () => {
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        if (user) {
-          user.getIdToken().then((tkn) => {
-            // set access token in session storage
-            sessionStorage.setItem("accessToken", tkn);
-
-            setAuthorizedUser(true);
-            setEmail('')
-            setPassword('')
-          })
-        }
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-  }
-
-
-  const signUpWithPassword = async () => {
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, emailr, passwordr)
-      const user = userCredential.user;
-
-      if (user) {
-        let tkn = await user.getIdToken()
-        // set access token in session storage
-        sessionStorage.setItem("accessToken", tkn);
-        setAuthorizedUser(true);
-        console.log(user)
-        await setDoc(doc(db, "Users", user.uid), { username: username, email: emailr, Trips: [] })
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-
-
-  function logoutUser() {
-    signOut(auth).then(() => {
-      // clear session storage
-      sessionStorage.clear();
-      setAuthorizedUser(false);
-      // window.location.replace("/");
-      alert('Logged Out Successfully');
-    }).catch((error) => {
-      // An error happened.
-      alert(error);
-    });
-  }
+  const theme = React.useMemo(
+    () => createTheme(mode === "light" ? lightTheme : darkTheme),
+    [mode]
+  )
 
   return (
-    <>
-      <h1>Journey Map</h1>
+    <ColorContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline enableColorScheme />
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<LayoutComponent />}>
+              <Route index element={<Home />} />
+              <Route path ='login' element={<SignIn />} />
+              <Route path='register' element={<SignUp />} />
+              <Route path='about' element={<About />} />
+              <Route path='contact' element={<Contact />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
+    </ColorContext.Provider>
+  )
+}
 
-      {authorizedUser ? (
-        <>
-          <p>Authorized user</p>
-          <h3>Tasks</h3>
-          <Tasks token={sessionStorage.getItem("accessToken")} />
-          <button onClick={logoutUser}>Logout Button</button>
-        </>
-      ) :
-        <>
-          <div>
-            <label htmlFor="email">email</label>
-            <input onChange={emailChanged} value={email} id="email" type="email" />
-          </div>
-
-          <div>
-            <label htmlFor="password">password</label>
-            <input onChange={passwordChanged} value={password} id="password" type="text" />
-          </div>
-
-          <button onClick={signInWithPassword}>Sign in with email and password</button>
-
-          {/* Register part */}
-          <hr />
-          <hr />
-
-          <div>
-            <label htmlFor="username">username Register</label>
-            <input onChange={usernameRegisterChanged} value={username} id="username" type="email" />
-          </div>
-
-          <div>
-            <label htmlFor="emailr">email Register</label>
-            <input onChange={emailRegisterChanged} value={emailr} id="emailr" type="email" />
-          </div>
-
-          <div>
-            <label htmlFor="passwordr">password Register</label>
-            <input onChange={passwordRegisterChanged} value={passwordr} id="passwordr" type="text" />
-          </div>
-
-          <button onClick={signUpWithPassword}>Sign up with email and password</button>
-
-        </>
+function useLocalStorage<T>(key: string, initialValue: T) {
+  // State to store our value
+  // Pass initial state function to useState so logic is only executed once
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    if (typeof window === "undefined") {
+      return initialValue;
+    }
+    try {
+      // Get from local storage by key
+      const item = window.localStorage.getItem(key);
+      // Parse stored json or if none return initialValue
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      // If error also return initialValue
+      console.log(error);
+      return initialValue;
+    }
+  });
+  // Return a wrapped version of useState's setter function that ...
+  // ... persists the new value to localStorage.
+  const setValue = (value: T | ((val: T) => T)) => {
+    try {
+      // Allow value to be a function so we have same API as useState
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+      // Save state
+      setStoredValue(valueToStore);
+      // Save to local storage
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
       }
-    </>
-  );
+    } catch (error) {
+      // A more advanced implementation would handle the error case
+      console.log(error);
+    }
+  };
+  return [storedValue, setValue] as const;
 }
 
 export default App;
