@@ -1,11 +1,11 @@
 import React from 'react';
 import { ThemeProvider, CssBaseline, PaletteMode, createTheme } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import './App.css';
 
 import Login from './components/Login/login';
-import NavBar from './components/Nav/NavBar'
 import { darkTheme } from './themes/dark';
 import { lightTheme } from './themes/light';
 import { ColorContext } from './ColorContext';
@@ -16,7 +16,9 @@ import About from './components/About/About';
 import Contact from './components/Contact/Contact';
 
 function App() {
-  const [mode, setMode] = React.useState<PaletteMode>("light");
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const [mode, setMode] = React.useState<PaletteMode>(prefersDarkMode ? "dark" : "light");
+
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
@@ -37,7 +39,6 @@ function App() {
     <ColorContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline enableColorScheme />
-
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<LayoutComponent />}>
