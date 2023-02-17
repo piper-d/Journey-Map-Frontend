@@ -6,7 +6,6 @@ export default function Tasks(props: any) {
     const [trip, setTrip] = useState<any>([])
 
     async function fetchData(token: any) {
-        console.log("here")
         const response = await axios.get(`http://localhost:8080/trips/`, {
             headers: {
                 'Authorization': `Bearer ${token}`
