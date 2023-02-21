@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { ThemeProvider, CssBaseline, PaletteMode, createTheme } from '@mui/material';
+import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import './App.css';
 
-import Login from './components/Login/login';
 import { darkTheme } from './themes/dark';
 import { lightTheme } from './themes/light';
 import { ColorContext } from './ColorContext';
@@ -39,7 +38,7 @@ function App() {
         setMode(mode === "light" ? "dark" : "light");
       },
     }),
-    [mode]
+    [mode, setMode]
   )
 
   const theme = React.useMemo(
