@@ -21,6 +21,8 @@ import darkBackground from '../../images/darkTopo.jpg'
 import lightBackground from '../../images/lightTopo.jpg'
 import Paper from '@mui/material/Paper';
 import { useTheme } from '@mui/material';
+import { Navigate } from 'react-router-dom';
+
 
 function Copyright(props: any) {
     return (
@@ -68,7 +70,6 @@ export default function SignUp() {
                 // set access token in session storage
                 sessionStorage.setItem("accessToken", tkn);
                 setAuthorizedUser(true);
-                console.log(user)
                 await setDoc(doc(db, "Users", user.uid), { username: username, email: emailr, Trips: [] })
             }
         } catch (error) {
@@ -93,10 +94,9 @@ export default function SignUp() {
         <>
             {authorizedUser ? (
                 <>
-                    <p>Authorized user</p>
-                    <h3>Tasks</h3>
-                    <Tasks token={sessionStorage.getItem("accessToken")} />
-                    <button onClick={logoutUser}>Logout Button</button>
+                    <>
+                        <Navigate to="/home" replace />
+                    </>
                 </>
             ) :
                 <Paper
@@ -124,75 +124,71 @@ export default function SignUp() {
                             <Typography component="h1" variant="h5">
                                 Sign Up
                             </Typography>
-                            <form>
-                                <Box component="form" noValidate sx={{ mt: 1 }}>
-                                    <TextField
-                                        margin="normal"
-                                        required
-                                        fullWidth
-                                        onChange={usernameRegisterChanged}
-                                        value={username}
-                                        id="username"
-                                        label="Username"
-                                        name="username"
-                                        autoComplete="username"
-                                        autoFocus
-                                    />
-                                    <Box component="form" noValidate sx={{ mt: 1 }}>
-                                        <TextField
-                                            margin="normal"
-                                            required
-                                            fullWidth
-                                            onChange={emailRegisterChanged}
-                                            value={emailr}
-                                            id="emailr"
-                                            label="Email Address"
-                                            name="email"
-                                            autoComplete="email"
-                                            autoFocus
-                                        />
-                                        <TextField
-                                            margin="normal"
-                                            required
-                                            fullWidth
-                                            onChange={passwordRegisterChanged}
-                                            value={passwordr}
-                                            name="password"
-                                            label="Password"
-                                            type="password"
-                                            id="password"
-                                            autoComplete="current-password"
-                                        />
-                                        <FormControlLabel
-                                            control={<Checkbox value="remember" color="primary" />}
-                                            label="Remember me"
-                                        />
-                                        <Button
-                                            fullWidth
-                                            variant="contained"
-                                            onClick={signUpWithPassword}
-                                            sx={{ mt: 3, mb: 2 }}
-                                        >
-                                            Sign Up
-                                        </Button>
-                                        <Grid container>
-                                            <Grid item xs>
-                                                <Link href="#" variant="body2">
-                                                    Forgot password?
-                                                </Link>
-                                            </Grid>
-                                            <Grid item>
-                                                <Link href="/login" variant="body2">
-                                                    {"Already have an account? Sign In"}
-                                                </Link>
-                                            </Grid>
-                                        </Grid>
-                                    </Box>
-                                </Box>
-                            </form>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                onChange={usernameRegisterChanged}
+                                value={username}
+                                id="username"
+                                label="Username"
+                                name="username"
+                                autoComplete="username"
+                                autoFocus
+                            />
+                            <Box component="form" sx={{ mt: 1 }}>
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    onChange={emailRegisterChanged}
+                                    value={emailr}
+                                    id="emailr"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                    autoFocus
+                                />
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    onChange={passwordRegisterChanged}
+                                    value={passwordr}
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox value="remember" color="primary" />}
+                                    label="Remember me"
+                                />
+                                <Button
+                                    fullWidth
+                                    variant="contained"
+                                    onClick={signUpWithPassword}
+                                    sx={{ mt: 3, mb: 2 }}
+                                >
+                                    Sign Up
+                                </Button>
+                                <Grid container>
+                                    <Grid item xs>
+                                        <Link href="#" variant="body2">
+                                            Forgot password?
+                                        </Link>
+                                    </Grid>
+                                    <Grid item>
+                                        <Link href="/login" variant="body2">
+                                            {"Already have an account? Sign In"}
+                                        </Link>
+                                    </Grid>
+                                </Grid>
+                            </Box>
                             <Copyright sx={{ mt: 3 }} />
                         </Box>
-                        
+
                     </Container>
                 </Paper>
 
