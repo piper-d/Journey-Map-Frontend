@@ -14,16 +14,13 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 import { SwitchModeButton } from '../SwitchModeButton/SwitchModeButton';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '@mui/material';
 import { getAuth, signOut } from "firebase/auth";
-
 
 function ResponsiveAppBar() {
     const navigate = useNavigate();
     const auth = getAuth()
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const [ setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const [ setAuthorizedUser] = useState<any>(false || sessionStorage.getItem("accessToken"))
 
     function logoutUser() {
