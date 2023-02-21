@@ -14,7 +14,6 @@ import Container from '@mui/material/Container';
 
 import { getAuth, signOut, createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from 'firebase/firestore'
-import Tasks from '../../components/Tasks';
 import db from "../../config/firebase.config"
 import '../../App.css';
 import darkBackground from '../../images/darkTopo.jpg'
@@ -75,19 +74,6 @@ export default function SignUp() {
         } catch (error) {
             console.log(error)
         }
-    }
-
-    function logoutUser() {
-        signOut(auth).then(() => {
-            // clear session storage
-            sessionStorage.clear();
-            setAuthorizedUser(false);
-            // window.location.replace("/");
-            alert('Logged Out Successfully');
-        }).catch((error) => {
-            // An error happened.
-            alert(error);
-        });
     }
 
     return (
