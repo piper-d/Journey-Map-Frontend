@@ -19,7 +19,6 @@ import lightBackground from '../../images/lightTopo.jpg'
 import Paper from '@mui/material/Paper';
 import { useTheme } from '@mui/material';
 import { Navigate } from 'react-router-dom';
-import Dashboard from '../Dashboard/Dashboard';
 
 function Copyright(props: any) {
     return (
