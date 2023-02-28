@@ -56,7 +56,6 @@ export default function SignIn() {
                 // Signed in 
                 const user = userCredential.user;
                 if (user) {
-                    console.log(user)
                     user.getIdToken()
                     .then((tkn) => {
                         // set access token in session storage

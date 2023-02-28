@@ -21,7 +21,9 @@ function ResponsiveAppBar() {
     const auth = getAuth()
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const [ setAuthorizedUser] = useState<any>(false || sessionStorage.getItem("accessToken"))
+    // const [ setAuthorizedUser ] = useState<any>(false || sessionStorage.getItem("accessToken"))
+
+    const [authorizedUser, setAuthorizedUser] = useState<any>(false || sessionStorage.getItem("accessToken"))
 
     function logoutUser() {
         signOut(auth).then(() => {

@@ -5,7 +5,7 @@ import axios from 'axios';
 const Dashboard: React.FunctionComponent<any> = (token) => {
     const [name, setName] = useState<string>();
 
-    async function fetchData(token: any) {
+    async function fetchUserData(token: any) {
         const response = await axios.get(`http://localhost:8080/user/`, {
             headers: {
                 'Authorization': `Bearer ${token.token}`
@@ -14,9 +14,20 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
         setName(await response.data.username)
     }
 
+    async function fetchTripData(token: any) {
+        const response = await axios.get(`http://localhost:8080/trips/`, {
+            headers: {
+                'Authorization': `Bearer ${token.token}`
+            }
+        });
+        console.log(response.data)
+    }
+
     useEffect(() => {
         if (token) {
-            fetchData(token);
+            fetchUserData(token);
+            fetchTripData(token);
+
         }
     }, [token]);
 
