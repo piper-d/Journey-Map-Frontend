@@ -17,8 +17,9 @@ import Contact from './components/Contact/Contact';
 import SignIn from './components/Login/signin';
 import SignUp from './components/Login/signup';
 import Dashboard from './components/Dashboard/Dashboard';
+import Settings from './components/Settings/Settings';
 
-function App() {
+function App() { 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [mode, setMode] = useLocalStorage<string>("mode", prefersDarkMode ? "dark" : "light");
 
@@ -30,6 +31,16 @@ function App() {
     }
 
     return <Dashboard token={user}/>;
+  };
+
+  const Setting = () => {
+    const user = sessionStorage.getItem("accessToken")
+
+    if (!user) {
+      return <Navigate to="/" replace />;
+    }
+
+    return <Settings token={user} />;
   };
 
   const colorMode = React.useMemo(
@@ -59,6 +70,7 @@ function App() {
               <Route path='about' element={<About />} />
               <Route path='contact' element={<Contact />} />
               <Route path='home' element={<Home />} />
+              <Route path='settings' element={<Setting />} />
             </Route>
           </Routes>
         </BrowserRouter>

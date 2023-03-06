@@ -59,6 +59,9 @@ function ResponsiveAppBar() {
     const register = () => {
         navigate('/register');
     }
+    const settings = () => {
+        navigate('/settings');
+    }
 
     return (
         <>
@@ -156,11 +159,20 @@ function ResponsiveAppBar() {
                                     >
                                         Contact Us
                                     </Button>
+                                    <Button
+                                        onClick={settings}
+                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                    >
+                                        Settings
+                                    </Button>
                                 </Box>
                                 <SwitchModeButton />
                                 <Button
                                     variant="contained"
-                                    onClick={logoutUser}>Logout</Button>
+                                    onClick={logoutUser}
+                                >
+                                    Logout
+                                </Button>
 
                                 {/* <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
