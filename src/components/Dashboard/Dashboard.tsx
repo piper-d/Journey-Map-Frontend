@@ -9,6 +9,7 @@ import Map from '../Map';
 const Dashboard: React.FunctionComponent<any> = (token) => {
     const [name, setName] = useState<string>();
     const [trips, setTrips] = useState<any>(null);
+    const [isLoading, setLoading] = useState(true);
 
     const {isLoaded} = useLoadScript({
         googleMapsApiKey: "AIzaSyC4xjHUUPNEeESInI-7NjLT7EthDehnFJE"
@@ -25,15 +26,18 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
         setName(await response.data.username)
     }
 
-    async function fetchTripData(token: any) {
-        const response = await axios.get(`http://localhost:8080/trips/`, {
+    function fetchTripData(token: any) {
+        axios.get(`http://localhost:8080/trips/`, {
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
-        });
-        console.log("Trip Response")
-        console.log(response.data)
-        setTrips(response.data)
+        })
+        .then((response => {
+            console.log("Trip Response")
+            console.log(response.data)
+            setTrips(response.data)
+            setLoading(false)
+        }));
     }
 
     useEffect(() => {
@@ -44,7 +48,7 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
     }, [token]);
 
     if (!isLoaded) return <div>Loading...</div>
-
+    if (isLoading) return <div>Loading...</div>
 
     return (
         <div>
