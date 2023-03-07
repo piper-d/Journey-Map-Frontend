@@ -1,7 +1,6 @@
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useMemo, useCallback, useRef } from "react";
 import {
     GoogleMap,
-    Marker,
     Polyline
 } from "@react-google-maps/api";
 
@@ -39,7 +38,6 @@ const Map: React.FunctionComponent<any> = (trips) => {
         zIndex: 1
     }
 
-    const mapRef = useRef<GoogleMap>();
     const options = useMemo<MapOptions>(() => ({
         disableDefaultUI: true,
         clickableIcons: false,

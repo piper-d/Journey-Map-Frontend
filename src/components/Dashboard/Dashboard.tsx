@@ -11,11 +11,9 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
     const [trips, setTrips] = useState<any>(null);
     const [isLoading, setLoading] = useState(true);
 
-    const {isLoaded} = useLoadScript({
-        googleMapsApiKey: "AIzaSyC4xjHUUPNEeESInI-7NjLT7EthDehnFJE"
+    const { isLoaded } = useLoadScript({
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY!
     });
-
-    
 
     async function fetchUserData(token: any) {
         const response = await axios.get(`http://localhost:8080/user/`, {
@@ -32,12 +30,11 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
                 'Authorization': `Bearer ${token.token}`
             }
         })
-        .then((response => {
-            console.log("Trip Response")
-            console.log(response.data)
-            setTrips(response.data)
-            setLoading(false)
-        }));
+            .then((response => {
+                console.log(response.data)
+                setTrips(response.data)
+                setLoading(false)
+            }));
     }
 
     useEffect(() => {
@@ -52,7 +49,7 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
 
     return (
         <div>
-            <Map trips={trips[0]}/>
+            <Map trips={trips[0]} />
         </div>
     );
 };
