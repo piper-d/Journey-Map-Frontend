@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Card, CardContent, Typography } from '@mui/material';
+import axios from 'axios';
+import { Card, CardContent, Typography, Button } from '@mui/material';
 import Map from './Map';
 
 interface CardData {
     title: string;
     details: any;
+    id: any;
     point_coords: any;
     date: string;
     timestamp: any;
@@ -32,8 +34,26 @@ function formatDate(timestamp: any): string {
 const TripPage = () => {
     const location = useLocation();
     const { card }: TripPageProps = location.state;
+    const token = sessionStorage.getItem("accessToken")
+    const [apiResponse, setApiResponse] = useState<string>('');
+    const [isLoading, setLoading] = useState(false);
 
-    console.log(card)
+    const handleApiCall = () => {
+        setLoading(true)
+        axios.get(`/trips/${card.id}/export`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((response => {
+                setLoading(false)
+                setApiResponse(response.data.downloadLink);
+            }))
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
 
     return (
         <>
@@ -52,6 +72,14 @@ const TripPage = () => {
                     <Typography variant="body1" color="text.secondary">
                         {formatDate(card.details.start_time)}
                     </Typography>
+                    <Button variant="contained" sx={{ marginTop: 2 }} onClick={handleApiCall}>
+                        Export Video
+                    </Button>
+                    {apiResponse && (
+                        <Typography variant="body1" sx={{marginTop: 2}} color="text.secondary">
+                            Download Link: <a href={apiResponse}>{apiResponse}</a>
+                        </Typography>
+                    )}
                 </CardContent>
             </Card>
         </>

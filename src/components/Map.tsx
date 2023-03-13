@@ -1,8 +1,5 @@
 import { useMemo, useCallback, useRef } from "react";
-import {
-    GoogleMap,
-    Polyline
-} from "@react-google-maps/api";
+import { GoogleMap, Polyline, Marker } from "@react-google-maps/api";
 
 type MapOptions = google.maps.MapOptions;
 type LatLongLiteral = google.maps.LatLngLiteral;
@@ -51,6 +48,8 @@ const Map: React.FunctionComponent<any> = (trips) => {
         map.fitBounds(bounds);
     }, []);
 
+    console.log(coords.length === 1)
+
     return <div className="container">
         <GoogleMap
             mapContainerClassName="map-container"
@@ -60,7 +59,20 @@ const Map: React.FunctionComponent<any> = (trips) => {
             <Polyline
                 path={coords}
                 options={LineOptions}
-            ></Polyline>
+            />
+            {/* {coords.length === 1} ? (
+                <>
+                    <Marker 
+                        position={coords[0]}
+                    />
+                </>
+            ) :
+            <>
+                <Polyline
+                    path={coords}
+                    options={LineOptions}
+                />
+            </> */}
         </GoogleMap>
     </div>
 };
