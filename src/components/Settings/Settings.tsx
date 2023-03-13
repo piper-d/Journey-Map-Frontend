@@ -25,7 +25,7 @@ const Settings: React.FunctionComponent<any> = (token) => {
             'username': `${username}`
         })
         try {
-            const response = await axios.put(`http://localhost:8080/user/`, 
+            const response = await axios.put(`/user/`, 
             {
                 ...data
             },
@@ -41,7 +41,7 @@ const Settings: React.FunctionComponent<any> = (token) => {
     }
 
     async function GetUserData(token: any) {
-        const response = await axios.get(`http://localhost:8080/user/`, {
+        const response = await axios.get(`/user/`, {
             headers: {
                 'Authorization': `Bearer ${token.token}`
             }
