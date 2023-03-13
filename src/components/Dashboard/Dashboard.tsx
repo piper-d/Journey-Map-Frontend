@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import { useLoadScript } from '@react-google-maps/api';
+import CardGrid from '../CardGrid';
 import Map from '../Map';
 
 
@@ -51,7 +52,7 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
 
     return (
         <div>
-            <Map trips={trips[0]} />
+            <CardGrid cards={trips}/>
         </div>
     );
 };

@@ -12,8 +12,7 @@ type LatLng = {
 }
 
 const Map: React.FunctionComponent<any> = (trips) => {
-    const tripData = trips.trips;
-    const tripCoords = tripData.point_coords
+    const tripCoords = trips.trips
 
     const getLatLngCoords = (coords: any[][]) => {
         return coords.map((x) => {
@@ -53,18 +52,16 @@ const Map: React.FunctionComponent<any> = (trips) => {
     }, []);
 
     return <div className="container">
-        <div className="map">
-            <GoogleMap
-                mapContainerClassName="map-container"
-                onLoad={onLoad}
-                options={options}
-            >
-                <Polyline
-                    path={coords}
-                    options={LineOptions}
-                ></Polyline>
-            </GoogleMap>
-        </div>
+        <GoogleMap
+            mapContainerClassName="map-container"
+            onLoad={onLoad}
+            options={options}
+        >
+            <Polyline
+                path={coords}
+                options={LineOptions}
+            ></Polyline>
+        </GoogleMap>
     </div>
 };
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
+import Container from '@mui/material/Container';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -18,6 +19,7 @@ import SignIn from './components/Login/signin';
 import SignUp from './components/Login/signup';
 import Dashboard from './components/Dashboard/Dashboard';
 import Settings from './components/Settings/Settings';
+import TripPage from './components/TripPage';
 
 function App() { 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -71,6 +73,7 @@ function App() {
               <Route path='contact' element={<Contact />} />
               <Route path='home' element={<Home />} />
               <Route path='settings' element={<Setting />} />
+              <Route path='trip' element={<TripPage />}/>
             </Route>
           </Routes>
         </BrowserRouter>
