@@ -21,9 +21,6 @@ const Settings: React.FunctionComponent<any> = (token) => {
     }
 
     const PutUserData = async (token: any, data: {username: string}) => {
-        console.log({
-            'username': `${username}`
-        })
         try {
             const response = await axios.put(`/user/`, 
             {
@@ -35,7 +32,6 @@ const Settings: React.FunctionComponent<any> = (token) => {
                 }
             });
         } catch (error) {
-            console.log('error');
             console.log(error);
         }
     }

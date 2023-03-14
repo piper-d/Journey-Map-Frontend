@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Card, CardContent, Typography, Button } from '@mui/material';
 import Map from './Map';
 import { useNavigate } from 'react-router-dom';
+import TitleUpdateButton from './TitleUpdateButton';
 
 interface CardData {
     title: string;
@@ -94,6 +95,7 @@ const TripPage = () => {
                     <Button variant="contained" sx={{ marginTop: 2 }} onClick={handleDelete}>
                         Delete Trip
                     </Button>
+                    <TitleUpdateButton trip={card}/>
                     {apiResponse && (
                         <Typography variant="body1" sx={{marginTop: 2}} color="text.secondary">
                             Download Link: <a href={apiResponse}>{apiResponse}</a>
