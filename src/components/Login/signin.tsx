@@ -50,7 +50,6 @@ export default function SignIn() {
     }
 
     const signInWithPassword = () => {
-
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in 

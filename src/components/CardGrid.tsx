@@ -29,10 +29,6 @@ function formatDate(timestamp: any): string {
     return `Time: ${formattedTime.toString()} ${formattedDate.toString()}`;
 }
 
-function viewTrip(trip: object) {
-    console.log(trip)
-}
-
 const CardGrid = ({ cards }: CardGridProps) => {
     const navigate = useNavigate();
 
@@ -40,6 +36,7 @@ const CardGrid = ({ cards }: CardGridProps) => {
         // Navigate to the new page with the `card` prop in the state
         navigate('/trip', { state: { card } });
     };
+    
     return (
         <>
             <Grid container spacing={3}>
@@ -47,7 +44,7 @@ const CardGrid = ({ cards }: CardGridProps) => {
                     <Grid item xs={12} sm={6} md={6} key={index}>
                         <Card >
                             <CardContent sx={{}}>
-                                <Map trips={card.point_coords} />
+                                <Map trip={card} />
                                 <Typography gutterBottom variant="h5" component="h2" sx={{marginTop: 1}}>
                                     {card.title}
                                 </Typography>
