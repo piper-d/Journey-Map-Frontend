@@ -22,6 +22,7 @@ jobs:
           REACT_APP_storageBucket: ${{secrets.STORAGE_BUCKET}}
           REACT_APP_messagingSenderId: ${{secrets.SENDER_ID}}
           REACT_APP_appId: ${{secrets.APP_ID}}
+          REACT_APP_GOOGLE_MAPS_API_KEY: ${{secrets.GM_API_KEY}}
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
