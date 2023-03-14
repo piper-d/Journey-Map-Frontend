@@ -11,7 +11,6 @@ type LatLng = {
 const Map: React.FunctionComponent<any> = (trip) => {
     const tripData = trip.trip
     const tripCoords = trip.trip.point_coords
-    console.log(tripData)
 
     const markers = () => {
         const markerComponents = [];
@@ -36,10 +35,10 @@ const Map: React.FunctionComponent<any> = (trip) => {
                     <Marker
                         key={i}
                         position={formattedKey}
-                        // icon={{
-                        //     url: mediaURL,
-                        //     scaledSize: new window.google.maps.Size(50, 50)
-                        // }}
+                        icon={{
+                            url: "https://www.ucf.edu/news/files/2023/02/Simulation.jpg",
+                            scaledSize: new window.google.maps.Size(50, 50)
+                        }}
                     />
                 );
 
@@ -56,30 +55,6 @@ const Map: React.FunctionComponent<any> = (trip) => {
     };
 
     const coords = getLatLngCoords(tripCoords);
-
-    // const markers = tripData.point_coords.filter((coord: { _latitude: any; _longitude: any; }) => {
-    //     const lat = coord._latitude;
-    //     const lng = coord._longitude;
-    //     const media = tripData.media[`(${lat}, ${lng})`];
-    //     return media != null;
-    // }).map((coord: { _latitude: any; _longitude: any; }) => {
-    //     const lat = coord._latitude;
-    //     const lng = coord._longitude;
-    //     const media = tripData.media[`(${lat}, ${lng})`];
-    //     const mediaCoords = { lat: lat, lng: lng };
-
-    //     return (
-    //         <Marker
-    //             key={`${lat}-${lng}`}
-    //             position={mediaCoords}
-    //             icon={{
-    //                 url: media[0],
-    //                 scaledSize: new window.google.maps.Size(50, 50),
-    //             }}
-    //         />
-    //     );
-    // });
-
 
     const LineOptions = {
         strokeColor: '#FF0000',
@@ -98,7 +73,8 @@ const Map: React.FunctionComponent<any> = (trip) => {
     const options = useMemo<MapOptions>(() => ({
         disableDefaultUI: true,
         clickableIcons: false,
-        draggable: false
+        draggable: false,
+        mapTypeId: "satellite"
     }), [])
 
     const onLoad = useCallback(function callback(map: { fitBounds: (arg0: google.maps.LatLngBounds) => void; }) {
@@ -114,34 +90,13 @@ const Map: React.FunctionComponent<any> = (trip) => {
             mapContainerClassName="map-container"
             onLoad={onLoad}
             options={options}
+            
         >
             {markers()} {/* call the markers() function and display the Marker components */}
             <Polyline
                 path={coords}
                 options={LineOptions}
             />
-            {/* {markerData.map((marker: { position: google.maps.LatLngLiteral | google.maps.LatLng; imageUrl: any; }, index: Key | null | undefined) => (
-                <Marker
-                    key={index}
-                    position={marker.position}
-                    icon={{ url: marker.imageUrl, scaledSize: new window.google.maps.Size(50, 50) }}
-                />
-            ))} */}
-
-
-            {/* {coords.length === 1} ? (
-                <>
-                    <Marker 
-                        position={coords[0]}
-                    />
-                </>
-            ) :
-            <>
-                <Polyline
-                    path={coords}
-                    options={LineOptions}
-                />
-            </> */}
         </GoogleMap>
     </div>
 };

@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Card, CardContent, Typography, Button } from '@mui/material';
 import Map from './Map';
+import { useNavigate } from 'react-router-dom';
 
 interface CardData {
     title: string;
@@ -33,12 +34,13 @@ function formatDate(timestamp: any): string {
 
 const TripPage = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const { card }: TripPageProps = location.state;
     const token = sessionStorage.getItem("accessToken")
     const [apiResponse, setApiResponse] = useState<string>('');
     const [isLoading, setLoading] = useState(false);
 
-    const handleApiCall = () => {
+    const handleExport = () => {
         setLoading(true)
         axios.get(`/trips/${card.id}/export`, {
             headers: {
@@ -54,12 +56,26 @@ const TripPage = () => {
             });
     };
 
+    const handleDelete = () => {
+        axios.delete(`/trips/${card.id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((response => {
+                console.log(response)
+                navigate('/home');
+            }))
+            .catch((error) => {
+                console.error(error);
+            });
+    };
 
     return (
         <>
             <Card>
                 <CardContent>
-                    <Map trips={card.point_coords} />
+                    <Map trip={card} />
                     <Typography gutterBottom variant="h5" component="h2" sx={{ marginTop: 1 }}>
                         {card.title}
                     </Typography>
@@ -72,8 +88,11 @@ const TripPage = () => {
                     <Typography variant="body1" color="text.secondary">
                         {formatDate(card.details.start_time)}
                     </Typography>
-                    <Button variant="contained" sx={{ marginTop: 2 }} onClick={handleApiCall}>
+                    <Button variant="contained" sx={{ marginTop: 2 }} onClick={handleExport}>
                         Export Video
+                    </Button>
+                    <Button variant="contained" sx={{ marginTop: 2 }} onClick={handleDelete}>
+                        Delete Trip
                     </Button>
                     {apiResponse && (
                         <Typography variant="body1" sx={{marginTop: 2}} color="text.secondary">
