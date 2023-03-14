@@ -5,14 +5,13 @@ import axios from 'axios';
 import { useLoadScript } from '@react-google-maps/api';
 import CardGrid from '../CardGrid';
 import Map from '../Map';
+import { Typography } from '@mui/material';
 
 
 const Dashboard: React.FunctionComponent<any> = (token) => {
     const [name, setName] = useState<string>();
     const [trips, setTrips] = useState<any>(null);
     const [isLoading, setLoading] = useState(true);
-
-    console.log(axios.defaults.baseURL)
 
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY!
@@ -34,7 +33,6 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
             }
         })
             .then((response => {
-                console.log(response.data)
                 setTrips(response.data)
                 setLoading(false)
             }));
@@ -51,9 +49,19 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
     if (isLoading) return <div>Loading...</div>
 
     return (
-        <div>
-            <CardGrid cards={trips}/>
-        </div>
+        <>
+            {trips.trips === "you currently have no trips" ? (
+                <>
+                    <Typography>
+                        No trips to show 
+                    </Typography>
+                </>
+            ) :
+                <>
+                    <CardGrid cards={trips} />
+                </>
+            }
+        </>
     );
 };
 
