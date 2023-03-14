@@ -34,9 +34,11 @@ const TitleUpdateButton: React.FunctionComponent<any> = (trip) => {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
+                })
+                .then((response) => {
+                    handleClose();
+                    navigate('/home');
                 });
-
-            console.log(response)
         } catch (error) {
             console.log(error);
         }
@@ -47,8 +49,6 @@ const TitleUpdateButton: React.FunctionComponent<any> = (trip) => {
             title: title
         }
         PutUserData(token, data)
-        handleClose();
-        navigate('/home');
     }
 
     return (
