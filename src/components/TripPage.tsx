@@ -58,18 +58,21 @@ const TripPage = () => {
     };
 
     const handleDelete = () => {
-        axios.delete(`/trips/${card.id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then((response => {
-                console.log(response)
-                navigate('/home');
-            }))
-            .catch((error) => {
-                console.error(error);
-            });
+        if (window.confirm(`Are you sure you want to delete the trip "${card.title}"?`)) {
+            axios.delete(`/trips/${card.id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then((response => {
+                    console.log(response)
+                    navigate('/home');
+                }))
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+
     };
 
     return (
