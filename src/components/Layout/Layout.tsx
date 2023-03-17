@@ -9,9 +9,7 @@ const LayoutComponent: React.FunctionComponent<ILayoutComponentProps> = (props) 
     return (
         <div>
             <NavBar />
-            <Container maxWidth="xl" sx={{marginTop: 3}}>
-                <Outlet />
-            </Container>
+            <Outlet />
         </div>
     );
 };

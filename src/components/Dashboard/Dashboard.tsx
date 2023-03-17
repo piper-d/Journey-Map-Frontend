@@ -5,7 +5,8 @@ import axios from 'axios';
 import { useLoadScript } from '@react-google-maps/api';
 import CardGrid from '../CardGrid';
 import Map from '../Map';
-import { Typography } from '@mui/material';
+import { Typography, Box } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 const Dashboard: React.FunctionComponent<any> = (token) => {
@@ -45,8 +46,8 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
         }
     }, [token]);
 
-    if (!isLoaded) return <div>Loading...</div>
-    if (isLoading) return <div>Loading...</div>
+    if (!isLoaded) return <Box sx={{ display: 'flex' }}><CircularProgress /></Box>
+    if (isLoading) return <Box sx={{ display: 'flex' }}><CircularProgress /></Box>
 
     return (
         <>

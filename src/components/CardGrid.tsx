@@ -1,6 +1,6 @@
 import React from 'react';
 import Map from './Map';
-import { Card, CardContent, Grid, Typography, Button } from '@mui/material';
+import { Card, CardContent, Grid, Typography, Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 interface CardData {
@@ -40,8 +40,14 @@ const CardGrid = ({ cards }: CardGridProps) => {
     console.log(cards)
     
     return (
-        <>
-            <Grid container spacing={3}>
+        <Box
+            sx={{
+                my: 5,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+            <Grid container spacing={3} maxWidth='lg'>
                 {cards.map((card, index) => (
                     <Grid item xs={12} sm={6} md={6} key={index}>
                         <Card >
@@ -54,7 +60,7 @@ const CardGrid = ({ cards }: CardGridProps) => {
                                     Average Pace: {card.details.average_speed} / mile
                                 </Typography>
                                 <Typography variant="body1" color="text.secondary">
-                                    Duration: {card.details.duration} 
+                                    Duration: {card.details.duration} minutes
                                 </Typography>
                                 <Typography variant="body1" color="text.secondary">
                                     Distance Traveled: {Math.round(card.details.distance * 100)/100} miles
@@ -70,7 +76,7 @@ const CardGrid = ({ cards }: CardGridProps) => {
                     </Grid>
                 ))}
             </Grid>
-        </>
+        </Box>
 
     );
 };

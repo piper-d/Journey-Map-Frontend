@@ -36,7 +36,7 @@ const Map: React.FunctionComponent<any> = (trip) => {
                         key={i}
                         position={formattedKey}
                         icon={{
-                            url: mediaURL,
+                            url: 'https://media.kasperskycontenthub.com/wp-content/uploads/sites/103/2019/09/26105755/fish-1.jpg',
                             scaledSize: new window.google.maps.Size(50, 50)
                         }}
                     />
@@ -73,7 +73,6 @@ const Map: React.FunctionComponent<any> = (trip) => {
     const options = useMemo<MapOptions>(() => ({
         disableDefaultUI: true,
         clickableIcons: false,
-        draggable: false,
         mapTypeId: "satellite"
     }), [])
 

@@ -1,10 +1,8 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
+import { Container, Typography, Button, Box } from '@mui/material';
+import TextField from '@mui/material/TextField/TextField';
 
 const Settings: React.FunctionComponent<any> = (token) => {
     const [username, setUsername] = useState("")
@@ -20,17 +18,17 @@ const Settings: React.FunctionComponent<any> = (token) => {
         PutUserData(token, data)
     }
 
-    const PutUserData = async (token: any, data: {username: string}) => {
+    const PutUserData = async (token: any, data: { username: string }) => {
         try {
-            const response = await axios.put(`/user/`, 
-            {
-                ...data
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${token.token}`
-                }
-            });
+            const response = await axios.put(`/user/`,
+                {
+                    ...data
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token.token}`
+                    }
+                });
         } catch (error) {
             console.log(error);
         }
@@ -53,34 +51,42 @@ const Settings: React.FunctionComponent<any> = (token) => {
 
 
     return (
-        <div>
-            <Typography variant='h3' sx={{ color: '#ffffff' }}>Edit Account Information</Typography>
-            <Typography variant='h5' sx={{ fontWeight: 'bold', margin: '15px 0 5px', color: '#ffffff' }}>Username</Typography>
-            <Box component="form" sx={{ mt: 1 }}>
-                <TextField
-                    type="text"
-                    label="Username"
-                    required
-                    fullWidth
-                    variant="filled"
-                    value={username}
-                    onChange={usernameChanged}
-                />
+        <Box
+            sx={{
+                my: 5,
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+            <Container>
+                <Typography variant='h3' sx={{ color: '#ffffff' }}>Edit Account Information</Typography>
+                <Typography variant='h5' sx={{ fontWeight: 'bold', margin: '15px 0 5px', color: '#ffffff' }}>Username</Typography>
+                <Box component="form" sx={{ mt: 1 }}>
+                    <TextField
+                        type="text"
+                        label="Username"
+                        required
+                        fullWidth
+                        variant="filled"
+                        value={username}
+                        onChange={usernameChanged}
+                    />
 
 
-                <Button
-                    sx={{ fontSize: '18px', fontWeight: 600, boxShadow: 3, marginTop: 6, paddingTop: 1.75, paddingBottom: 1.75 }}
-                    type='submit'
-                    size='large'
-                    variant='contained'
-                    onClick={handleSubmit}
-                    fullWidth
-                >
-                    Submit
-                </Button>
-            </Box>
+                    <Button
+                        sx={{ fontSize: '18px', fontWeight: 600, boxShadow: 3, marginTop: 6, paddingTop: 1.75, paddingBottom: 1.75 }}
+                        type='submit'
+                        size='large'
+                        variant='contained'
+                        onClick={handleSubmit}
+                        fullWidth
+                    >
+                        Submit
+                    </Button>
+                </Box>
+            </Container>
 
-        </div>
+
+        </Box>
     );
 };
 

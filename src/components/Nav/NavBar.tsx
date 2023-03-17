@@ -62,6 +62,9 @@ function ResponsiveAppBar() {
     const settings = () => {
         navigate('/settings');
     }
+    const home = () => {
+        navigate('/home');
+    }
 
     return (
         <>
@@ -125,6 +128,10 @@ function ResponsiveAppBar() {
                                         <MenuItem onClick={contact}>
                                             <Typography textAlign="center">Contact Us</Typography>
                                         </MenuItem>
+                                        <MenuItem onClick={home}>
+                                            <Typography textAlign="center">Archive</Typography>
+                                        </MenuItem>
+
                                     </Menu>
                                 </Box>
                                 <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -148,23 +155,29 @@ function ResponsiveAppBar() {
                                 </Typography>
                                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                                     <Button
+                                        onClick={home}
+                                        sx={{ my: 2, color: 'white', display: 'block' }}>
+                                        <Typography textAlign="center">ARCHIVE</Typography>
+                                    </Button>
+                                    <Button
                                         onClick={about}
                                         sx={{ my: 2, color: 'white', display: 'block' }}
                                     >
-                                        About
+                                        <Typography textAlign="center">About</Typography>
                                     </Button>
                                     <Button
                                         onClick={contact}
                                         sx={{ my: 2, color: 'white', display: 'block' }}
                                     >
-                                        Contact Us
+                                        <Typography textAlign="center">Contact Us</Typography>
                                     </Button>
                                     <Button
                                         onClick={settings}
                                         sx={{ my: 2, color: 'white', display: 'block' }}
                                     >
-                                        Settings
+                                        <Typography textAlign="center">Settings</Typography>
                                     </Button>
+
                                 </Box>
                                 <SwitchModeButton />
                                 <Button
@@ -173,36 +186,6 @@ function ResponsiveAppBar() {
                                 >
                                     Logout
                                 </Button>
-
-                                {/* <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </Box> */}
                             </Toolbar>
                         </Container>
                     </AppBar>

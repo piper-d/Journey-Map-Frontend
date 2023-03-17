@@ -3,6 +3,7 @@ import { Button, Dialog, DialogTitle, TextField } from '@mui/material';
 import axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 const TitleUpdateButton: React.FunctionComponent<any> = (trip) => {
@@ -53,8 +54,8 @@ const TitleUpdateButton: React.FunctionComponent<any> = (trip) => {
 
     return (
         <>
-            <Button variant="contained" sx={{ marginTop: 2 }} onClick={handleOpen}>
-                Change Title
+            <Button variant="contained" sx={{ marginTop: 2 }} startIcon={<EditIcon />}  onClick={handleOpen}>
+                Edit
             </Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Change Title</DialogTitle>
