@@ -36,7 +36,7 @@ const Map: React.FunctionComponent<any> = (trip) => {
                         key={i}
                         position={formattedKey}
                         icon={{
-                            url: "https://www.ucf.edu/news/files/2023/02/Simulation.jpg",
+                            url: mediaURL,
                             scaledSize: new window.google.maps.Size(50, 50)
                         }}
                     />

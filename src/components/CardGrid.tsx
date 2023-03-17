@@ -36,6 +36,8 @@ const CardGrid = ({ cards }: CardGridProps) => {
         // Navigate to the new page with the `card` prop in the state
         navigate('/trip', { state: { card } });
     };
+
+    console.log(cards)
     
     return (
         <>
@@ -49,10 +51,13 @@ const CardGrid = ({ cards }: CardGridProps) => {
                                     {card.title}
                                 </Typography>
                                 <Typography variant="body1" color="text.secondary">
-                                    Average Speed: {Math.round(card.details.average_speed_mph)} mph
+                                    Average Pace: {card.details.average_speed} / mile
                                 </Typography>
                                 <Typography variant="body1" color="text.secondary">
-                                    Distance Traveled: {Math.round(card.details.distance_traveled_miles)} miles
+                                    Duration: {card.details.duration} 
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    Distance Traveled: {Math.round(card.details.distance * 100)/100} miles
                                 </Typography>
                                 <Typography variant="body1" color="text.secondary">
                                     {formatDate(card.details.start_time)}
