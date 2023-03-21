@@ -20,28 +20,26 @@ const Map: React.FunctionComponent<any> = (trip) => {
             for (let i = 0; i < Object.keys(tripData.media).length; i++) {
                 const mediaCoords = Object.keys(tripData.media)[i]
                 const media = tripData.media[mediaCoords]
-                const mediaURL = media[i]
+
+                console.log(mediaCoords)
 
                 const formattedKey = {
                     lat: Number(mediaCoords.substring(mediaCoords.indexOf('(') + 1, mediaCoords.indexOf(','))),
                     lng: Number(mediaCoords.substring(mediaCoords.indexOf(',') + 1, mediaCoords.indexOf(')'))),
                 };
 
-                console.log(formattedKey)
-                console.log(mediaURL)
-
                 markerComponents.push( // push each Marker component into the array
                     <Marker
                         key={i}
                         position={formattedKey}
                         icon={{
-                            url: mediaURL,
+                            url: media[0], 
                             scaledSize: new window.google.maps.Size(50, 50)
                         }}
                     />
                 );
-                return markerComponents; // return the array of Marker components
             }
+            return markerComponents;
         } 
     }
 

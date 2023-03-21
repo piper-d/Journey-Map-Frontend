@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Button, TextField } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid'
 
 
 const ImageUploader: React.FunctionComponent<any> = (tripId) => {
@@ -10,19 +9,19 @@ const ImageUploader: React.FunctionComponent<any> = (tripId) => {
     const token = sessionStorage.getItem("accessToken")
 
     const PutUserData = async (token: any, data: any, tripId: string) => {
-        console.log({
-            ...data
-        })
         try {
-            const response = await axios.post(`/trips/${tripId}/media`,
-                {
-                    ...data
-                },
-                {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+            const formData = new FormData();
+            formData.append('latitude', data.latitude);
+            formData.append('longitude', data.longitude);
+            formData.append('image', data.image);
+            formData.append('extension', data.extension);
+
+            const response = await axios.post(`/trips/${tripId}/media`, formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
             console.log(response)
         } catch (error) {
             console.log(error);
@@ -40,7 +39,6 @@ const ImageUploader: React.FunctionComponent<any> = (tripId) => {
                 image: selectedImage,
                 extension: extension ?? ''
             }
-
             PutUserData(token, data, tripId.tripId)
 
         } catch (error) {
