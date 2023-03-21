@@ -60,7 +60,7 @@ const CardGrid = ({ cards }: CardGridProps) => {
                                     Average Pace: {card.details.average_speed} / mile
                                 </Typography>
                                 <Typography variant="body1" color="text.secondary">
-                                    Duration: {card.details.duration} minutes
+                                    Duration: {Math.round(card.details.duration / 60)} minutes
                                 </Typography>
                                 <Typography variant="body1" color="text.secondary">
                                     Distance Traveled: {Math.round(card.details.distance * 100)/100} miles

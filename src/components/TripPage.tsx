@@ -9,6 +9,8 @@ import VideoEmbed from './VideoEmbed';
 
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import CircularProgress from '@mui/material/CircularProgress';
+import ImageUploader from './ImageUploader';
 
 interface CardData {
     title: string;
@@ -45,8 +47,12 @@ const TripPage = () => {
     const [apiResponse, setApiResponse] = useState<string>('');
     const [isLoading, setLoading] = useState(false);
 
+    
+
     const handleExport = () => {
         setLoading(true)
+        console.log(card.id)
+        console.log(token)
         axios.get(`/trips/${card.id}/export`, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -57,9 +63,9 @@ const TripPage = () => {
                 console.log(response)
                 setApiResponse(response.data.downloadLink);
             }))
-            .catch((error) => {
-                console.error(error);
-            });
+            // .catch((error) => {
+            //     console.error(error);
+            // });
     };
 
     const handleDelete = () => {
@@ -80,6 +86,8 @@ const TripPage = () => {
 
     };
 
+    // if (isLoading) return <Box sx={{ display: 'flex' }}><CircularProgress /></Box>
+
     return (
         <Box
             sx={{
@@ -95,10 +103,13 @@ const TripPage = () => {
                             {card.title}
                         </Typography>
                         <Typography variant="body1" color="text.secondary">
-                            Average Speed: {Math.round(card.details.average_speed_mph)} mph
+                            Average Pace: {card.details.average_speed} / mile
                         </Typography>
                         <Typography variant="body1" color="text.secondary">
-                            Distance Traveled: {Math.round(card.details.distance_traveled_miles)} miles
+                            Duration: {Math.round(card.details.duration / 60)} minutes
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary">
+                            Distance Traveled: {Math.round(card.details.distance * 100) / 100} miles
                         </Typography>
                         <Typography variant="body1" color="text.secondary">
                             {formatDate(card.details.start_time)}
@@ -110,9 +121,10 @@ const TripPage = () => {
                         <Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} sx={{ marginTop: 2 }} onClick={handleDelete}>
                             Delete
                         </Button>
+                        <ImageUploader tripId={card.id}/>
                         {apiResponse && (
                             <Typography variant="body1" sx={{ marginTop: 2 }} color="text.secondary">
-                                <VideoEmbed url={apiResponse}/>
+                                {/* <VideoEmbed url={apiResponse}/> */}
                                 Download Link: <a href={apiResponse}>{apiResponse}</a>
                             </Typography>
                         )}

@@ -14,7 +14,6 @@ const Map: React.FunctionComponent<any> = (trip) => {
 
     const markers = () => {
         const markerComponents = [];
-
         if (tripData.media && Object.keys(tripData.media).length > 0) {
             // myObject is defined and has at least one property
             // you can call Object.keys(myObject) safely here
@@ -36,12 +35,11 @@ const Map: React.FunctionComponent<any> = (trip) => {
                         key={i}
                         position={formattedKey}
                         icon={{
-                            url: 'https://media.kasperskycontenthub.com/wp-content/uploads/sites/103/2019/09/26105755/fish-1.jpg',
+                            url: mediaURL,
                             scaledSize: new window.google.maps.Size(50, 50)
                         }}
                     />
                 );
-
                 return markerComponents; // return the array of Marker components
             }
         } 
