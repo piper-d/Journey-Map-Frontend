@@ -1,5 +1,8 @@
-import { useMemo, useCallback, useRef, Key } from "react";
-import { GoogleMap, Polyline, Marker } from "@react-google-maps/api";
+import { useMemo, useCallback, useRef, Key, useState } from "react";
+import { GoogleMap, Polyline, Marker, OverlayView } from "@react-google-maps/api";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+
 
 type MapOptions = google.maps.MapOptions;
 type LatLongLiteral = google.maps.LatLngLiteral;
@@ -8,40 +11,119 @@ type LatLng = {
     lng: number;
 }
 
+const createCustomMarker = (imgSrc: any) => {
+    return `
+    <div style="
+      position: relative;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: flex-end;
+    ">
+      <img
+        src="${imgSrc}"
+        style="
+          width: 100%;
+          height: auto;
+          border-radius: 50%;
+          object-fit: cover;
+        "
+      />
+      <div style="
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 50%);
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-top: 14px solid red;
+      "></div>
+    </div>
+  `;
+};
+
+
+
 const Map: React.FunctionComponent<any> = (trip) => {
     const tripData = trip.trip
     const tripCoords = trip.trip.point_coords
+    const [open, setOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState("");
+
 
     const markers = () => {
         const markerComponents = [];
         if (tripData.media && Object.keys(tripData.media).length > 0) {
-            // myObject is defined and has at least one property
-            // you can call Object.keys(myObject) safely here
             for (let i = 0; i < Object.keys(tripData.media).length; i++) {
-                const mediaCoords = Object.keys(tripData.media)[i]
-                const media = tripData.media[mediaCoords]
-
-                console.log(mediaCoords)
+                const mediaCoords = Object.keys(tripData.media)[i];
+                const media = tripData.media[mediaCoords];
 
                 const formattedKey = {
                     lat: Number(mediaCoords.substring(mediaCoords.indexOf('(') + 1, mediaCoords.indexOf(','))),
                     lng: Number(mediaCoords.substring(mediaCoords.indexOf(',') + 1, mediaCoords.indexOf(')'))),
                 };
 
-                markerComponents.push( // push each Marker component into the array
-                    <Marker
+                markerComponents.push(
+                    <OverlayView
                         key={i}
                         position={formattedKey}
-                        icon={{
-                            url: media[0], 
-                            scaledSize: new window.google.maps.Size(50, 50)
-                        }}
-                    />
+                        mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                    >
+                        <div
+                            style={{
+                                position: "absolute",
+                                width: "50px",
+                                height: "50px",
+                                display: "flex",
+                                alignItems: "flex-end",
+                                transform: "translate(-50%, -100%)", // Add this line to adjust the position
+                                cursor: "pointer", // Add this line to change the cursor to a pointer when hovering over the marker
+                            }}
+                            onClick={() => handleOpen(media[0])} // Add this line to handle clicks on the marker
+                        >
+                            <img
+                                src={media[0]}
+                                alt="User media"
+                                style={{
+                                    width: "100%",
+                                    height: "auto",
+                                    borderRadius: "30%",
+                                    objectFit: "cover",
+                                }}
+                            />
+                            <div
+                                style={{
+                                    position: "absolute",
+                                    bottom: 0,
+                                    left: "50%",
+                                    transform: "translate(-50%, 85%)",
+                                    width: 0,
+                                    height: 0,
+                                    borderLeft: "7px solid transparent",
+                                    borderRight: "7px solid transparent",
+                                    borderTop: "14px solid white",
+                                }}
+                            ></div>
+                        </div>
+                    </OverlayView>
                 );
             }
-            return markerComponents;
-        } 
-    }
+        }
+        return markerComponents;
+    };
+
+    const handleOpen = (imageUrl: string) => {
+        setSelectedImage(imageUrl);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+
 
     const getLatLngCoords = (coords: any[][]) => {
         return coords.map((x) => {
@@ -80,20 +162,37 @@ const Map: React.FunctionComponent<any> = (trip) => {
         map.fitBounds(bounds);
     }, []);
 
-    return <div className="container">
-        <GoogleMap
-            mapContainerClassName="map-container"
-            onLoad={onLoad}
-            options={options}
-            
-        >
-            {markers()} {/* call the markers() function and display the Marker components */}
-            <Polyline
-                path={coords}
-                options={LineOptions}
-            />
-        </GoogleMap>
-    </div>
+    return (
+        <div className="container">
+            <GoogleMap
+                mapContainerClassName="map-container"
+                onLoad={onLoad}
+                options={options}
+            >
+                {markers()}
+                <Polyline path={coords} options={LineOptions} />
+            </GoogleMap>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                maxWidth="md"
+                fullWidth
+            >
+                <DialogContent>
+                    <img
+                        src={selectedImage}
+                        alt="Full-size user media"
+                        style={{
+                            width: "100%",
+                            height: "auto",
+                            objectFit: "contain",
+                        }}
+                    />
+                </DialogContent>
+            </Dialog>
+        </div>
+    );
+
 };
 
 export default Map;
