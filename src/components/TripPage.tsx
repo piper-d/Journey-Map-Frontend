@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Card, CardContent, Typography, Button, Box, Container } from '@mui/material';
 import Map from './Map';
 import { useNavigate } from 'react-router-dom';
 import TitleUpdateButton from './TitleUpdateButton';
-import VideoEmbed from './VideoEmbed';
-
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import CircularProgress from '@mui/material/CircularProgress';
 import ImageUploader from './ImageUploader';
 
 interface CardData {
@@ -85,8 +82,6 @@ const TripPage = () => {
         }
 
     };
-
-    // if (isLoading) return <Box sx={{ display: 'flex' }}><CircularProgress /></Box>
 
     return (
         <Box

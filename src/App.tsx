@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
-import Container from '@mui/material/Container';
-
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 import './App.css';
-
 import { darkTheme } from './themes/dark';
 import { lightTheme } from './themes/light';
 import { ColorContext } from './ColorContext';
-
 import LayoutComponent from './components/Layout/Layout';
 import Landing from './components/Landing/Landing';
 import About from './components/About/About';

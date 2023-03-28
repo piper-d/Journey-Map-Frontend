@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { useLoadScript } from '@react-google-maps/api';
 import CardGrid from '../CardGrid';
-import { Typography, Box, LinearProgress } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 
 

@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Button, TextField } from '@mui/material';
-import loadImage from 'blueimp-load-image';
-
-import EXIF from 'exif-js';
-
 import exifr from 'exifr'
-
 
 const ImageUploader: React.FunctionComponent<any> = (tripId) => {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);

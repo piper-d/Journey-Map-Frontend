@@ -1,57 +1,20 @@
-import { useMemo, useCallback, useRef, Key, useState } from "react";
-import { GoogleMap, Polyline, Marker, OverlayView } from "@react-google-maps/api";
+import { useMemo, useCallback, useState } from "react";
+import { GoogleMap, Polyline, OverlayView } from "@react-google-maps/api";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 
 
 type MapOptions = google.maps.MapOptions;
-type LatLongLiteral = google.maps.LatLngLiteral;
 type LatLng = {
     lat: number;
     lng: number;
 }
-
-const createCustomMarker = (imgSrc: any) => {
-    return `
-    <div style="
-      position: relative;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: flex-end;
-    ">
-      <img
-        src="${imgSrc}"
-        style="
-          width: 100%;
-          height: auto;
-          border-radius: 50%;
-          object-fit: cover;
-        "
-      />
-      <div style="
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translate(-50%, 50%);
-        width: 0;
-        height: 0;
-        border-left: 7px solid transparent;
-        border-right: 7px solid transparent;
-        border-top: 14px solid red;
-      "></div>
-    </div>
-  `;
-};
-
-
 
 const Map: React.FunctionComponent<any> = (trip) => {
     const tripData = trip.trip
     const tripCoords = trip.trip.point_coords
     const [open, setOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState("");
-
 
     const markers = () => {
         const markerComponents = [];
@@ -122,8 +85,6 @@ const Map: React.FunctionComponent<any> = (trip) => {
     const handleClose = () => {
         setOpen(false);
     };
-
-
 
     const getLatLngCoords = (coords: any[][]) => {
         return coords.map((x) => {
