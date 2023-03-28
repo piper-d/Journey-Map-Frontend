@@ -43,7 +43,7 @@ const TripPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { card }: TripPageProps = location.state;
-    const token = sessionStorage.getItem("accessToken")
+    const token = sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken")
     const [apiResponse, setApiResponse] = useState<string>('');
     const [isLoading, setLoading] = useState(false);
 

@@ -26,7 +26,7 @@ function App() {
   const [mode, setMode] = useLocalStorage<string>("mode", prefersDarkMode ? "dark" : "light");
 
   const Home = () => {
-    const user = sessionStorage.getItem("accessToken")
+    const user = sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken")
     
     if (!user) {
       return <Navigate to="/" replace />;
@@ -36,7 +36,7 @@ function App() {
   };
 
   const Setting = () => {
-    const user = sessionStorage.getItem("accessToken")
+    const user = sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken")
 
     if (!user) {
       return <Navigate to="/" replace />;

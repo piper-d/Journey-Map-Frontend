@@ -23,12 +23,14 @@ function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     // const [ setAuthorizedUser ] = useState<any>(false || sessionStorage.getItem("accessToken"))
 
-    const [authorizedUser, setAuthorizedUser] = useState<any>(false || sessionStorage.getItem("accessToken"))
+    const [authorizedUser, setAuthorizedUser] = useState<any>(false || sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken"))
 
     function logoutUser() {
         signOut(auth).then(() => {
             // clear session storage
             sessionStorage.clear();
+            localStorage.clear();
+
             setAuthorizedUser(false);
 
             alert('Logged Out Successfully');
@@ -68,7 +70,7 @@ function ResponsiveAppBar() {
 
     return (
         <>
-            {sessionStorage.getItem("accessToken") ? (
+            {sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken") ? (
                 <>
                     {/* Navigation bar when user is logged in */}
                     <AppBar position="static">

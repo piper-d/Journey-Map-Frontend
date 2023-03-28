@@ -11,7 +11,7 @@ const TitleUpdateButton: React.FunctionComponent<any> = (trip) => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState('');
-    const token = sessionStorage.getItem("accessToken")
+    const token = sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken")
 
     const handleOpen = () => {
         setOpen(true);
