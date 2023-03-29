@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { Card, CardContent, Typography, Button, Box, Container } from '@mui/material';
+import { Card, CardContent, Typography, Button, Box, Container, Grid, Dialog, DialogTitle, TextField } from '@mui/material';
 import Map from './Map';
 import { useNavigate } from 'react-router-dom';
-import TitleUpdateButton from './TitleUpdateButton';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import ImageUploader from './ImageUploader';
+
+import EditIcon from '@mui/icons-material/Edit';
 
 interface CardData {
     title: string;
@@ -43,8 +44,47 @@ const TripPage = () => {
     const token = sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken")
     const [apiResponse, setApiResponse] = useState<string>('');
     const [isLoading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [title, setTitle] = useState('');
 
-    
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(event.target.value);
+    };
+
+    const PutUserData = async (token: any, data: { title: string }) => {
+        try {
+            const response = await axios.put(`/trips/${card.id}`,
+                {
+                    ...data
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then((response) => {
+                    handleClose();
+                    navigate('/home');
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleSubmit = () => {
+        const data = {
+            title: title
+        }
+        PutUserData(token, data)
+    }
 
     const handleExport = () => {
         setLoading(true)
@@ -109,14 +149,29 @@ const TripPage = () => {
                         <Typography variant="body1" color="text.secondary">
                             {formatDate(card.details.start_time)}
                         </Typography>
-                        <Button variant="contained" startIcon={<FileDownloadIcon />} sx={{ marginTop: 2 }} onClick={handleExport}>
-                            Export
-                        </Button>
-                        <TitleUpdateButton trip={card} />
-                        <Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} sx={{ marginTop: 2 }} onClick={handleDelete}>
-                            Delete
-                        </Button>
-                        <ImageUploader tripId={card.id}/>
+                        <Grid container spacing={2} sx={{ marginTop: 2 }}>
+                            <Grid item xs={4}>
+                                <Button variant="contained" startIcon={<FileDownloadIcon />} fullWidth onClick={handleExport}>
+                                    Export
+                                </Button>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Button variant="contained" startIcon={<EditIcon />} fullWidth onClick={handleOpen}>
+                                    Edit
+                                </Button>
+                                <Dialog open={open} onClose={handleClose}>
+                                    <DialogTitle>Change Title</DialogTitle>
+                                    <TextField label="Title" value={title} onChange={handleTitleChange} />
+                                    <Button onClick={handleSubmit}>Submit</Button>
+                                </Dialog>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} fullWidth onClick={handleDelete}>
+                                    Delete
+                                </Button>
+                            </Grid>
+                        </Grid>
+                        <ImageUploader tripId={card.id} />
                         {apiResponse && (
                             <Typography variant="body1" sx={{ marginTop: 2 }} color="text.secondary">
                                 {/* <VideoEmbed url={apiResponse}/> */}
