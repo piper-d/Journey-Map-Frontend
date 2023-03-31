@@ -70,6 +70,8 @@ const ImageUploader: React.FunctionComponent<any> = (tripId) => {
             formData.append('image', data.image);
             formData.append('extension', data.extension);
 
+            console.log(data.image)
+
             await axios.post(`/trips/${tripId}/media`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -146,9 +148,11 @@ const ImageUploader: React.FunctionComponent<any> = (tripId) => {
                     <br />
                 </>
             )}
-            <Button variant="contained" onClick={handleSubmit}>
-                Upload Image
-            </Button>
+            {selectedImage && (
+                <Button variant="contained" onClick={handleSubmit}>
+                    Upload Image
+                </Button>
+            )}
         </div>
     );
 };
