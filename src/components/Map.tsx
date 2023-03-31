@@ -1,8 +1,10 @@
 import { useMemo, useCallback, useState } from "react";
-import { GoogleMap, Polyline, OverlayView } from "@react-google-maps/api";
+import { Button } from '@mui/material';
+import { GoogleMap, Polyline, OverlayView, LoadScript } from "@react-google-maps/api";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-
+import axios from 'axios';
+import CircularProgress from "@mui/material/CircularProgress";
 
 type MapOptions = google.maps.MapOptions;
 type LatLng = {
@@ -14,7 +16,13 @@ const Map: React.FunctionComponent<any> = (trip) => {
     const tripData = trip.trip
     const tripCoords = trip.trip.point_coords
     const [open, setOpen] = useState(false);
-    const [selectedImage, setSelectedImage] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [selectedMedia, setSelectedMedia] = useState<{
+        id: string,
+        imageUrl: string;
+        latitude: string;
+        longitude: string;
+    } | null>(null);
 
     const markers = () => {
         const markerComponents = [];
@@ -44,7 +52,7 @@ const Map: React.FunctionComponent<any> = (trip) => {
                                 transform: "translate(-50%, -100%)", // Add this line to adjust the position
                                 cursor: "pointer", // Add this line to change the cursor to a pointer when hovering over the marker
                             }}
-                            onClick={() => handleOpen(media[0])} // Add this line to handle clicks on the marker
+                            onClick={() => handleOpen(media, mediaCoords, tripData.id)} // Add this line to handle clicks on the marker
                         >
                             <img
                                 src={media[0]}
@@ -77,13 +85,70 @@ const Map: React.FunctionComponent<any> = (trip) => {
         return markerComponents;
     };
 
-    const handleOpen = (imageUrl: string) => {
-        setSelectedImage(imageUrl);
+    const handleOpen = (media: any, mediaCoords: any, id: string) => {
+        setSelectedMedia({
+            id: id,
+            imageUrl: media[0],
+            latitude: mediaCoords.substring(mediaCoords.indexOf('(') + 1, mediaCoords.indexOf(',')),
+            longitude: mediaCoords.substring(mediaCoords.indexOf(',') + 1, mediaCoords.indexOf(')')),
+        });
         setOpen(true);
     };
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const deleteImageData = async (token: any, latitude: string, longitude: string, imageUrl: string, id: string) => {
+        try {
+            // Construct the request body with the required parameters
+            const data = {
+                latitude: latitude,
+                longitude: longitude,
+                url: imageUrl
+            };
+
+            console.log(id)
+
+            await axios.put(`/trips/${id}/media/delete`,
+                {
+                    ...data
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(response => {
+                    console.log('Image deleted successfully:', response);
+                });
+
+        } catch (error) {
+            console.log('Error deleting image:', error);
+        }
+    }
+
+    const handleDelete = async () => {
+        if (selectedMedia) {
+            const token = sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken")
+            setLoading(true);
+
+            try {
+                // Call the deleteImageData function (previously defined) with the selectedMedia's latitude, longitude, and imageUrl
+                await deleteImageData(token, selectedMedia.latitude, selectedMedia.longitude, selectedMedia.imageUrl, selectedMedia.id);
+
+                // Close the dialog after deleting the image
+                handleClose();
+
+                // Refresh the page
+                window.location.reload();
+            } catch (error) {
+                // Handle error (e.g., show an error message)
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        }
     };
 
     const getLatLngCoords = (coords: any[][]) => {
@@ -96,17 +161,24 @@ const Map: React.FunctionComponent<any> = (trip) => {
     const coords = getLatLngCoords(tripCoords);
 
     const LineOptions = {
-        strokeColor: '#FF0000',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: '#FF0000',
-        fillOpacity: 0.35,
+        strokeColor: 'black',
+        strokeWidth: 5,
         clickable: false,
         draggable: false,
         editable: false,
         visible: true,
         radius: 30000,
         zIndex: 1
+    }
+    const LineOptions2 = {
+        strokeColor: 'white',
+        strokeWidth: 3,
+        clickable: false,
+        draggable: false,
+        editable: false,
+        visible: true,
+        radius: 30000,
+        zIndex: 2
     }
 
     const options = useMemo<MapOptions>(() => ({
@@ -125,32 +197,51 @@ const Map: React.FunctionComponent<any> = (trip) => {
 
     return (
         <div className="container">
-            <GoogleMap
-                mapContainerClassName="map-container"
-                onLoad={onLoad}
-                options={options}
+            <LoadScript
+                googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY!}
             >
-                {markers()}
-                <Polyline path={coords} options={LineOptions} />
-            </GoogleMap>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                maxWidth="md"
-                fullWidth
-            >
-                <DialogContent>
-                    <img
-                        src={selectedImage}
-                        alt="Full-size user media"
-                        style={{
-                            width: "100%",
-                            height: "auto",
-                            objectFit: "contain",
-                        }}
-                    />
-                </DialogContent>
-            </Dialog>
+                <GoogleMap
+                    mapContainerClassName="map-container"
+                    onLoad={onLoad}
+                    options={options}
+                >
+                    {markers()}
+                    <Polyline path={coords} options={LineOptions} />
+                    <Polyline path={coords} options={LineOptions2} />
+                </GoogleMap>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    maxWidth="md"
+                    fullWidth
+                >
+                    <DialogContent>
+                        <img
+                            src={selectedMedia?.imageUrl || ""}
+                            alt="Full-size user media"
+                            style={{
+                                width: "100%",
+                                height: "auto",
+                                objectFit: "contain",
+                            }}
+                        />
+                        {loading ? (
+                            <div style={{ display: "flex", justifyContent: "center", marginTop: 8 }}>
+                                <CircularProgress />
+                            </div>
+                        ) : (
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={handleDelete}
+                                style={{ marginTop: 8 }}
+                            >
+                                Delete Image
+                            </Button>
+                        )}
+                    </DialogContent>
+                </Dialog>
+            </LoadScript>
         </div>
     );
 

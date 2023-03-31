@@ -12,10 +12,6 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
     const [trips, setTrips] = useState<any>(null);
     const [isLoading, setLoading] = useState(true);
 
-    const { isLoaded } = useLoadScript({
-        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY!
-    });
-
     function fetchTripData(token: any) {
         axios.get(`/trips/`, {
             headers: {
@@ -32,9 +28,9 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
         if (token) {
             fetchTripData(token);
         }
-    }, [token]);
+    }, []);
 
-    if (!isLoaded || isLoading) {
+    if (isLoading) {
         return (
             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', mt:5 }}>
                 <CircularProgress />

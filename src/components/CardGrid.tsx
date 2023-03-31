@@ -34,11 +34,10 @@ const CardGrid = ({ cards }: CardGridProps) => {
 
     const handleViewTrip = (card: CardData) => {
         // Navigate to the new page with the `card` prop in the state
-        navigate('/trip', { state: { card } });
+        localStorage.setItem('card', JSON.stringify(card));
+        navigate('/trip');
     };
 
-    console.log(cards)
-    
     return (
         <Box
             sx={{
@@ -53,7 +52,7 @@ const CardGrid = ({ cards }: CardGridProps) => {
                         <Card >
                             <CardContent sx={{}}>
                                 <Map trip={card} />
-                                <Typography gutterBottom variant="h5" component="h2" sx={{marginTop: 1}}>
+                                <Typography gutterBottom variant="h5" component="h2" sx={{ marginTop: 1 }}>
                                     {card.title}
                                 </Typography>
                                 <Typography variant="body1" color="text.secondary">
@@ -63,7 +62,7 @@ const CardGrid = ({ cards }: CardGridProps) => {
                                     Duration: {Math.round(card.details.duration / 60)} minutes
                                 </Typography>
                                 <Typography variant="body1" color="text.secondary">
-                                    Distance Traveled: {Math.round(card.details.distance * 100)/100} miles
+                                    Distance Traveled: {Math.round(card.details.distance * 100) / 100} miles
                                 </Typography>
                                 <Typography variant="body1" color="text.secondary">
                                     {formatDate(card.details.start_time)}

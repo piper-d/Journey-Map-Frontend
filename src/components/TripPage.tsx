@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Card, CardContent, Typography, Button, Box, Container, Grid, Dialog, DialogTitle, TextField } from '@mui/material';
@@ -19,10 +19,6 @@ interface CardData {
     timestamp: any;
 }
 
-interface TripPageProps {
-    card: CardData;
-}
-
 function formatDate(timestamp: any): string {
     if (typeof timestamp === 'object') {
         timestamp = timestamp._seconds
@@ -38,14 +34,38 @@ function formatDate(timestamp: any): string {
 }
 
 const TripPage = () => {
-    const location = useLocation();
     const navigate = useNavigate();
-    const { card }: TripPageProps = location.state;
+    const location = useLocation();
+    const card = JSON.parse(localStorage.getItem('card') || '') as CardData | null;
     const token = sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken")
     const [apiResponse, setApiResponse] = useState<string>('');
     const [isLoading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState('');
+    const [tripData, setTripData] = useState<CardData | null>(null);
+
+    useEffect(() => {
+        // Fetch the trip data from the API and update the state
+        const fetchTripData = async () => {
+            if (token && card) {
+                try {
+                    const response = await axios.get(`/trips/${card.id}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    const dataWithId = { ...response.data.data, id: card.id };
+                    setTripData(dataWithId);
+                    if (dataWithId) {
+                        localStorage.setItem('card', JSON.stringify(dataWithId));
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        };
+        fetchTripData();
+    }, []);
 
     const handleOpen = () => {
         setOpen(true);
@@ -60,8 +80,8 @@ const TripPage = () => {
     };
 
     const PutUserData = async (token: any, data: { title: string }) => {
-        try {
-            const response = await axios.put(`/trips/${card.id}`,
+        if (card) {
+            await axios.put(`/trips/${card.id}`,
                 {
                     ...data
                 },
@@ -72,10 +92,8 @@ const TripPage = () => {
                 })
                 .then((response) => {
                     handleClose();
-                    navigate('/home');
+                    window.location.reload()
                 });
-        } catch (error) {
-            console.log(error);
         }
     }
 
@@ -87,41 +105,49 @@ const TripPage = () => {
     }
 
     const handleExport = () => {
-        setLoading(true)
-        console.log(card.id)
-        console.log(token)
-        axios.get(`/trips/${card.id}/export`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
+        try {
+            if (card) {
+                setLoading(true)
+                console.log(card.id)
+                console.log(token)
+                axios.get(`/trips/${card.id}/export`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                    .then((response => {
+                        setLoading(false)
+                        console.log(response)
+                        setApiResponse(response.data.downloadLink);
+                    }))
             }
-        })
-            .then((response => {
-                setLoading(false)
-                console.log(response)
-                setApiResponse(response.data.downloadLink);
-            }))
-            // .catch((error) => {
-            //     console.error(error);
-            // });
+        } catch (error) {
+            console.log(error)
+        }
     };
 
     const handleDelete = () => {
-        if (window.confirm(`Are you sure you want to delete the trip "${card.title}"?`)) {
-            axios.delete(`/trips/${card.id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-                .then((response => {
-                    console.log(response)
-                    navigate('/home');
-                }))
-                .catch((error) => {
-                    console.error(error);
-                });
+        if (card) {
+            if (window.confirm(`Are you sure you want to delete the trip "${card.title}"?`)) {
+                axios.delete(`/trips/${card.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                    .then((response => {
+                        console.log(response)
+                        navigate('/home');
+                    }))
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            }
         }
-
     };
+
+    if (!card) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <Box
@@ -133,51 +159,60 @@ const TripPage = () => {
             <Container maxWidth='lg'>
                 <Card>
                     <CardContent>
-                        <Map trip={card} />
-                        <Typography gutterBottom variant="h5" component="h2" sx={{ marginTop: 1 }}>
-                            {card.title}
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            Average Pace: {card.details.average_speed} / mile
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            Duration: {Math.round(card.details.duration / 60)} minutes
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            Distance Traveled: {Math.round(card.details.distance * 100) / 100} miles
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                            {formatDate(card.details.start_time)}
-                        </Typography>
-                        <Grid container spacing={2} sx={{ marginTop: 2 }}>
-                            <Grid item xs={4}>
-                                <Button variant="contained" startIcon={<FileDownloadIcon />} fullWidth onClick={handleExport}>
-                                    Export
-                                </Button>
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Button variant="contained" startIcon={<EditIcon />} fullWidth onClick={handleOpen}>
-                                    Edit
-                                </Button>
-                                <Dialog open={open} onClose={handleClose}>
-                                    <DialogTitle>Change Title</DialogTitle>
-                                    <TextField label="Title" value={title} onChange={handleTitleChange} />
-                                    <Button onClick={handleSubmit}>Submit</Button>
-                                </Dialog>
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} fullWidth onClick={handleDelete}>
-                                    Delete
-                                </Button>
-                            </Grid>
-                        </Grid>
-                        <ImageUploader tripId={card.id} />
-                        {apiResponse && (
-                            <Typography variant="body1" sx={{ marginTop: 2 }} color="text.secondary">
-                                {/* <VideoEmbed url={apiResponse}/> */}
-                                Download Link: <a href={apiResponse}>{apiResponse}</a>
+                        {card ? (
+                            <>
+                                <Map trip={card} />
+                                <Typography gutterBottom variant="h5" component="h2" sx={{ marginTop: 1 }}>
+                                    {tripData?.title}
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    Average Pace: {tripData?.details.average_speed} / mile
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    Duration: {Math.round(tripData?.details.duration / 60)} minutes
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    Distance Traveled: {Math.round(tripData?.details.distance * 100) / 100} miles
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    {formatDate(tripData?.details.start_time)}
+                                </Typography>
+                                <Grid container spacing={2} sx={{ marginTop: 2 }}>
+                                    <Grid item xs={4}>
+                                        <Button variant="contained" startIcon={<FileDownloadIcon />} fullWidth onClick={handleExport}>
+                                            Export
+                                        </Button>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <Button variant="contained" startIcon={<EditIcon />} fullWidth onClick={handleOpen}>
+                                            Edit
+                                        </Button>
+                                        <Dialog open={open} onClose={handleClose}>
+                                            <DialogTitle>Change Title</DialogTitle>
+                                            <TextField label="Title" value={title} onChange={handleTitleChange} />
+                                            <Button onClick={handleSubmit}>Submit</Button>
+                                        </Dialog>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} fullWidth onClick={handleDelete}>
+                                            Delete
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                                <ImageUploader tripId={tripData?.id} />
+                                {apiResponse && (
+                                    <Typography variant="body1" sx={{ marginTop: 2 }} color="text.secondary">
+                                        {/* <VideoEmbed url={apiResponse}/> */}
+                                        Download Link: <a href={apiResponse}>{apiResponse}</a>
+                                    </Typography>
+                                )}
+                            </>
+                        ) : (
+                            <Typography variant="body1" color="text.secondary">
+                                No trip data available
                             </Typography>
                         )}
+
                     </CardContent>
                 </Card>
             </Container>

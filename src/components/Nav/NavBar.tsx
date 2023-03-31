@@ -32,6 +32,7 @@ function ResponsiveAppBar() {
             localStorage.clear();
 
             setAuthorizedUser(false);
+            localStorage.removeItem('card');
 
             alert('Logged Out Successfully');
             window.location.replace("/");
