@@ -69,9 +69,7 @@ const ImageUploader: React.FunctionComponent<any> = (tripId) => {
             formData.append('longitude', data.longitude);
             formData.append('image', data.image);
             formData.append('extension', data.extension);
-
-            console.log(data.image)
-
+            
             await axios.post(`/trips/${tripId}/media`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -81,7 +79,10 @@ const ImageUploader: React.FunctionComponent<any> = (tripId) => {
                 setUploadSuccess(true); // Set upload success state based on the API response
 
                 // Refresh the page after a short delay
-                window.location.reload();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000)
+
             });
 
         } catch (error) {

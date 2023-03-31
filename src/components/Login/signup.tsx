@@ -82,9 +82,9 @@ export default function SignUp() {
 
     const signUpWithPassword = async () => {
         try {
-            const isEmailValid = validateEmail(emailr);
-            const isPasswordValid = validatePassword(passwordr);
-            if (isEmailValid && isPasswordValid) {
+            // const isEmailValid = validateEmail(emailr);
+            // const isPasswordValid = validatePassword(passwordr);
+            if (true) {
                 const userCredential = await createUserWithEmailAndPassword(auth, emailr, passwordr)
                 const user = userCredential.user;
 
