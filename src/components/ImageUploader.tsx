@@ -79,9 +79,7 @@ const ImageUploader: React.FunctionComponent<any> = (tripId) => {
                 setUploadSuccess(true); // Set upload success state based on the API response
 
                 // Refresh the page after a short delay
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
+                window.location.reload();
             });
 
         } catch (error) {
