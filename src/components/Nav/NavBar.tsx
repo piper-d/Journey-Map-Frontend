@@ -50,7 +50,7 @@ function ResponsiveAppBar() {
     useEffect(() => {
         const handleScroll = () => {
             const offset = window.pageYOffset;
-            if (offset > 100) {
+            if (offset > 10) {
                 setNavBackgroundColor(color);
             } else {
                 setNavBackgroundColor('transparent');
