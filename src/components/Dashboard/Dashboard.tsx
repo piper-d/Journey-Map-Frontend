@@ -40,7 +40,7 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
     }
 
     return (
-        <Paper sx={{ backgroundColor: 'red' }}>
+        <Paper>
             {trips.trips === "you currently have no trips" ? (
                 <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5 }}>
                     <Typography variant="h5">
