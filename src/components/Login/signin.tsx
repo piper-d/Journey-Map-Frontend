@@ -19,6 +19,7 @@ import lightBackground from '../../images/lightTopo.jpg'
 import Paper from '@mui/material/Paper';
 import { useTheme } from '@mui/material';
 import { Navigate } from 'react-router-dom';
+import topo from '../../images/SpoonGraphics-Topographic-Map-4.png'
 
 export default function SignIn() {
     const auth = getAuth()
@@ -126,8 +127,8 @@ export default function SignIn() {
                         justifyContent: 'center',
                         alignItems: 'center',
                         height: "100vh",
-                        backgroundImage: `url(${darkBackground})`,
-                        backgroundSize: "cover",
+                        backgroundImage: `url(${topo})`,
+                        backgroundRepeat: 'repeat',
                         backgroundPosition: "center",
                     }}
                 >

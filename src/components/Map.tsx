@@ -62,7 +62,8 @@ const Map: React.FunctionComponent<any> = (trip) => {
                                         width: "100%",
                                         height: "auto",
                                         borderRadius: "30%",
-                                        objectFit: "cover",
+                                        objectFit: "cover", 
+                                        boxShadow: "0 0 0 3px white, 0 0 0 6px black",
                                     }}
                                 />
                                 <div
@@ -164,7 +165,7 @@ const Map: React.FunctionComponent<any> = (trip) => {
     const coords = getLatLngCoords(tripCoords);
 
     const LineOptions = {
-        strokeColor: 'black',
+        strokeColor: 'cyan',
         strokeWidth: 5,
         clickable: false,
         draggable: false,
@@ -173,16 +174,7 @@ const Map: React.FunctionComponent<any> = (trip) => {
         radius: 30000,
         zIndex: 1
     }
-    const LineOptions2 = {
-        strokeColor: 'white',
-        strokeWidth: 3,
-        clickable: false,
-        draggable: false,
-        editable: false,
-        visible: true,
-        radius: 30000,
-        zIndex: 2
-    }
+
 
     const options = useMemo<MapOptions>(() => ({
         disableDefaultUI: true,
@@ -210,7 +202,6 @@ const Map: React.FunctionComponent<any> = (trip) => {
                 >
                     {markers()}
                     <Polyline path={coords} options={LineOptions} />
-                    <Polyline path={coords} options={LineOptions2} />
                 </GoogleMap>
                 <Dialog
                     open={open}

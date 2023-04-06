@@ -98,11 +98,7 @@ function ResponsiveAppBar() {
 
     const buttonStyle = (path: string) => ({
         my: 2,
-        color: 'white',
-        display: 'block',
-        textDecoration: activePage ? 'underline' : 'none',
-        borderColor: 'transparent',
-        background: 'transparent',
+        color: activePage === path ? 'primary.main' : 'white',
     });
 
     return (
@@ -334,6 +330,7 @@ function ResponsiveAppBar() {
                             </Button>
                             <Button
                                 onClick={register}
+                                
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 Register

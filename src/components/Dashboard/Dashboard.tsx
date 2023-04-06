@@ -4,8 +4,9 @@ import axios from 'axios';
 
 import { useLoadScript } from '@react-google-maps/api';
 import CardGrid from '../CardGrid';
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Paper } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
+import topo from '../../images/SpoonGraphics-Topographic-Map-4.png'
 
 
 const Dashboard: React.FunctionComponent<any> = (token) => {
@@ -39,17 +40,17 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
     }
 
     return (
-        <>
+        <Paper sx={{ backgroundColor: 'red' }}>
             {trips.trips === "you currently have no trips" ? (
                 <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5 }}>
                     <Typography variant="h5">
                         Create a trip using our mobile app
                     </Typography>
                 </Box>
-            ) :
-                <CardGrid cards={trips} />
-            }
-        </>
+            ) : (
+                    <CardGrid cards={trips} />
+            )}
+        </Paper>
     );
 };
 

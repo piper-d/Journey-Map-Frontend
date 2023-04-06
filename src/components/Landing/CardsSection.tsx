@@ -7,6 +7,7 @@ import ShareIcon from '@mui/icons-material/Share';
 
 
 
+
 export default function CardsSection() {
     const theme = useTheme();
     const isDarkMode = theme.palette.mode === 'dark';

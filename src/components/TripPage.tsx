@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import ImageUploader from './ImageUploader';
-
+import topo from '../images/SpoonGraphics-Topographic-Map-4.png'
 import EditIcon from '@mui/icons-material/Edit';
 
 interface CardData {
@@ -152,11 +152,13 @@ const TripPage = () => {
     return (
         <Box
             sx={{
-                my: 5,
-                alignItems: 'center',
+                backgroundImage: `url(${topo})`,
+                backgroundRepeat: 'repeat',
+                display: 'flex',
                 justifyContent: 'center',
+                height: '100vh',
             }}>
-            <Container maxWidth='lg'>
+            <Container maxWidth='xl' sx={{ marginTop: 10 }}>
                 <Card>
                     <CardContent>
                         {card ? (

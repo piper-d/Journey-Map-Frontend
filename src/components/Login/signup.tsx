@@ -16,11 +16,10 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from 'firebase/firestore'
 import db from "../../config/firebase.config"
 import '../../App.css';
-import darkBackground from '../../images/darkTopo.jpg'
-import lightBackground from '../../images/lightTopo.jpg'
 import Paper from '@mui/material/Paper';
 import { useTheme } from '@mui/material';
 import { Navigate } from 'react-router-dom';
+import topo from '../../images/SpoonGraphics-Topographic-Map-4.png'
 
 export default function SignUp() {
     const auth = getAuth()
@@ -120,8 +119,8 @@ export default function SignUp() {
                         justifyContent: 'center',
                         alignItems: 'center',
                         height: "100vh",
-                        backgroundImage: `url(${darkBackground})`,
-                        backgroundSize: "cover",
+                        backgroundImage: `url(${topo})`,
+                        backgroundRepeat: 'repeat',
                         backgroundPosition: "center",
                     }}
                 >
