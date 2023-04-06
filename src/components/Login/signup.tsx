@@ -116,13 +116,16 @@ export default function SignUp() {
             ) :
                 <Paper
                     sx={{
-                        height: "90vh",
-                        backgroundImage: theme.palette.mode === 'dark' ? `url(${darkBackground})` : `url(${lightBackground})`,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: "100vh",
+                        backgroundImage: `url(${darkBackground})`,
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                     }}
                 >
-                    <Container component="main" maxWidth="xs" sx={{ paddingTop: 10 }}>
+                    <Container component="main" maxWidth="xs">
                         <Box
                             sx={{
                                 display: 'flex',

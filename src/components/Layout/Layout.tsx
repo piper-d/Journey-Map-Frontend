@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import NavBar from '../Nav/NavBar'
-import Container from '@mui/material/Container';
+// import Footer from '../Nav/Footer';
 
 export interface ILayoutComponentProps { }
 
@@ -10,6 +10,7 @@ const LayoutComponent: React.FunctionComponent<ILayoutComponentProps> = (props) 
         <div>
             <NavBar />
             <Outlet />
+            {/* <Footer /> */}
         </div>
     );
 };

@@ -46,15 +46,7 @@ export default function SignIn() {
         }
     };
 
-    const validatePassword = (password: string) => {
-        if (password.length < 6) {
-            setPasswordError('Password must be at least 6 characters');
-            return false;
-        } else {
-            setPasswordError('');
-            return true;
-        }
-    };
+
 
     const emailChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value)
@@ -70,8 +62,7 @@ export default function SignIn() {
 
     const signInWithPassword = () => {
         const isEmailValid = validateEmail(email);
-        const isPasswordValid = validatePassword(password);
-        if (isEmailValid && isPasswordValid) {
+        if (isEmailValid) {
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
@@ -99,6 +90,7 @@ export default function SignIn() {
                 });
         }
     }
+    
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -116,7 +108,6 @@ export default function SignIn() {
                 handleClose();
             })
             .catch((error) => {
-                const errorCode = error.code;
                 const errorMessage = error.message;
                 alert(errorMessage);
             });
@@ -131,13 +122,16 @@ export default function SignIn() {
             ) :
                 <Paper
                     sx={{
-                        height: "90vh",
-                        backgroundImage: theme.palette.mode === 'dark' ? `url(${darkBackground})` : `url(${lightBackground})`,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: "100vh",
+                        backgroundImage: `url(${darkBackground})`,
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                     }}
                 >
-                    <Container component="main" maxWidth="xs" sx={{ paddingTop: 10 }}>
+                    <Container maxWidth="xs">
                         <Box
                             sx={{
                                 display: 'flex',
@@ -192,7 +186,7 @@ export default function SignIn() {
                                     variant="contained"
                                     onClick={signInWithPassword}
                                     sx={{ mt: 3, mb: 2 }}
-                                    disabled={Boolean(emailError) || Boolean(passwordError) || !email || !password}
+                                    disabled={!email || !password}
                                 >
                                     Sign In
                                 </Button>

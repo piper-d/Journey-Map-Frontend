@@ -163,6 +163,7 @@ const Settings: React.FunctionComponent<any> = (token) => {
                     <Button
                         sx={{ fontSize: '18px', fontWeight: 600, boxShadow: 3, marginTop: 6, paddingTop: 1.75, paddingBottom: 1.75 }}
                         type='button'
+                        color="error"
                         size='large'
                         variant='contained'
                         onClick={handleDeleteAccount}
