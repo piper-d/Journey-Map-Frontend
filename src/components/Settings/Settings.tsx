@@ -1,14 +1,18 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, Button, Box } from '@mui/material';
+import { Container, Typography, Button, Paper, Box } from '@mui/material';
 import TextField from '@mui/material/TextField/TextField';
 import { getAuth, sendPasswordResetEmail, signOut } from "firebase/auth";
+import Grid from '@mui/material/Grid';
+import darkBackground from '../../images/darkTopo.jpg';
+import { useTheme } from '@mui/material';
 
 const Settings: React.FunctionComponent<any> = (token) => {
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const auth = getAuth()
+    const theme = useTheme();
 
     const usernameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(event.target.value)
@@ -45,7 +49,7 @@ const Settings: React.FunctionComponent<any> = (token) => {
             localStorage.clear();
 
             localStorage.removeItem('card');
-            
+
             window.location.replace("/");
         }).catch((error) => {
             // An error happened.
@@ -105,75 +109,100 @@ const Settings: React.FunctionComponent<any> = (token) => {
 
 
     return (
-        <Box
+        <Paper
             sx={{
-                my: 5,
-                alignItems: 'center',
+                display: 'flex',
                 justifyContent: 'center',
-            }}>
-            <Container>
-                <Typography variant='h3' sx={{ fontWeight: 'bold', margin: '15px 0 5px', color: '#ffffff' }}>Edit Account Information</Typography>
-                <Typography variant='h5' sx={{ fontWeight: 'bold', margin: '15px 0 5px', color: '#ffffff' }}>Change Username</Typography>
-                <TextField
-                    type="text"
-                    label="Username"
-                    required
-                    fullWidth
-                    variant="filled"
-                    value={username}
-                    onChange={usernameChanged}
-                />
-
-
-                <Button
-                    sx={{ fontSize: '18px', fontWeight: 600, boxShadow: 3, marginTop: 6, paddingTop: 1.75, paddingBottom: 1.75 }}
-                    type='submit'
-                    size='large'
-                    variant='contained'
-                    onClick={handleSubmit}
-                    fullWidth
+                alignItems: 'center',
+                height: '100vh',
+                backgroundImage: `url(${darkBackground})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+            }}
+        >
+            <Container maxWidth="sm">
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        backgroundColor: theme.palette.background.default,
+                        borderRadius: 5,
+                        padding: 4
+                    }}
                 >
-                    Submit
-                </Button>
-                {/* ... */}
-                {/* Change Password */}
-                <Typography variant='h5' sx={{ fontWeight: 'bold', margin: '15px 0 5px', color: '#ffffff' }}>Change Password</Typography>
-                <Box component="form" sx={{ mt: 1 }}>
-                    <TextField
-                        type="email"
-                        label="Email"
-                        required
-                        fullWidth
-                        variant="filled"
-                        value={email}
-                        onChange={emailChanged}
-                    />
-                    <Button
-                        sx={{ fontSize: '18px', fontWeight: 600, boxShadow: 3, marginTop: 6, paddingTop: 1.75, paddingBottom: 1.75 }}
-                        type='button'
-                        size='large'
-                        variant='contained'
-                        onClick={handlePasswordChange}
-                        fullWidth
-                    >
-                        Send Password Reset Email
-                    </Button>
-
-                    <Typography variant='h5' sx={{ fontWeight: 'bold', margin: '15px 0 5px', color: '#ffffff' }}>Delete Account</Typography>
-                    <Button
-                        sx={{ fontSize: '18px', fontWeight: 600, boxShadow: 3, marginTop: 6, paddingTop: 1.75, paddingBottom: 1.75 }}
-                        type='button'
-                        color="error"
-                        size='large'
-                        variant='contained'
-                        onClick={handleDeleteAccount}
-                        fullWidth
-                    >
-                        Delete Account
-                    </Button>
+                    <Typography component="h1" variant="h4" marginBottom={5}>
+                        Edit Account Information
+                    </Typography>
+                    <Grid container spacing={4}>
+                        <Grid item xs={12}>
+                            <Typography variant="h5" sx={{ fontWeight: "bold", margin: "15px 0 5px"}}>
+                                Change Username
+                            </Typography>
+                            <TextField
+                                type="text"
+                                label="Username"
+                                required
+                                fullWidth
+                                variant="filled"
+                                value={username}
+                                onChange={usernameChanged}
+                            />
+                            <Button
+                                sx={{ fontSize: "18px", fontWeight: 600, boxShadow: 3, marginTop: 2, paddingTop: 1.75, paddingBottom: 1.75 }}
+                                type="submit"
+                                size="large"
+                                variant="contained"
+                                onClick={handleSubmit}
+                                fullWidth
+                                disabled={!username.trim()}
+                            >
+                                Submit
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography variant="h5" sx={{ fontWeight: "bold", margin: "15px 0 5px"}}>
+                                Change Password
+                            </Typography>
+                            <TextField
+                                type="email"
+                                label="Email"
+                                required
+                                fullWidth
+                                variant="filled"
+                                value={email}
+                                onChange={emailChanged}
+                            />
+                            <Button
+                                sx={{ fontSize: "18px", fontWeight: 600, boxShadow: 3, marginTop: 2, paddingTop: 1.75, paddingBottom: 1.75 }}
+                                type="button"
+                                size="large"
+                                variant="contained"
+                                onClick={handlePasswordChange}
+                                fullWidth
+                                disabled={!email.trim()}
+                            >
+                                Send Password Reset Email
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                sx={{ fontSize: "18px", fontWeight: 600, boxShadow: 3, marginTop: 6, paddingTop: 1.75, paddingBottom: 1.75 }}
+                                type="button"
+                                color="error"
+                                size="large"
+                                variant="contained"
+                                onClick={handleDeleteAccount}
+                                fullWidth
+                                
+                            >
+                                Delete Account
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </Box>
             </Container>
-        </Box>
+        </Paper >
     );
 };
 

@@ -9,6 +9,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import ImageUploader from './ImageUploader';
 import topo from '../images/SpoonGraphics-Topographic-Map-4.png'
 import EditIcon from '@mui/icons-material/Edit';
+import Alert from '@mui/material/Alert';
 
 interface CardData {
     title: string;
@@ -43,6 +44,7 @@ const TripPage = () => {
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState('');
     const [tripData, setTripData] = useState<CardData | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     useEffect(() => {
         // Fetch the trip data from the API and update the state
@@ -107,22 +109,30 @@ const TripPage = () => {
     const handleExport = () => {
         try {
             if (card) {
-                setLoading(true)
-                console.log(card.id)
-                console.log(token)
+                setLoading(true);
                 axios.get(`/trips/${card.id}/export`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 })
-                    .then((response => {
-                        setLoading(false)
+                    .then((response) => {
                         console.log(response)
-                        setApiResponse(response.data.downloadLink);
-                    }))
+                        setLoading(false);
+                        if (response.status === 200) {
+                            setApiResponse(response.data.downloadLink);
+                            setErrorMessage('');
+                        } else if (response.status === 400) {
+                            setErrorMessage('Trip must have media to export.');
+                        }
+                    })
+                    .catch((error) => {
+                        setLoading(false);
+                        console.log(error);
+                        setErrorMessage('Something went wrong. Please try again.');
+                    });
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     };
 
@@ -202,6 +212,9 @@ const TripPage = () => {
                                     </Grid>
                                 </Grid>
                                 <ImageUploader tripId={tripData?.id} />
+                                {errorMessage && (
+                                    <Alert severity="error" sx={{ marginTop: 2 }}>{errorMessage}</Alert>
+                                )}
                                 {apiResponse && (
                                     <Typography variant="body1" sx={{ marginTop: 2 }} color="text.secondary">
                                         {/* <VideoEmbed url={apiResponse}/> */}
