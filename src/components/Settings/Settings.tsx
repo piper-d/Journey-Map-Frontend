@@ -69,7 +69,6 @@ const Settings: React.FunctionComponent<any> = (token) => {
                 // Log the user out
                 // Replace this with your own logout implementation
                 logoutUser();
-                console.log('User logged out');
             } catch (error) {
                 console.log(error);
             }
@@ -98,6 +97,7 @@ const Settings: React.FunctionComponent<any> = (token) => {
                 'Authorization': `Bearer ${token.token}`
             }
         });
+        setEmail(response.data.email)
         setUsername(response.data.username)
     }
 
@@ -157,22 +157,10 @@ const Settings: React.FunctionComponent<any> = (token) => {
                                 fullWidth
                                 disabled={!username.trim()}
                             >
-                                Submit
+                                Change Username
                             </Button>
                         </Grid>
                         <Grid item xs={12}>
-                            <Typography variant="h5" sx={{ fontWeight: "bold", margin: "15px 0 5px"}}>
-                                Change Password
-                            </Typography>
-                            <TextField
-                                type="email"
-                                label="Email"
-                                required
-                                fullWidth
-                                variant="filled"
-                                value={email}
-                                onChange={emailChanged}
-                            />
                             <Button
                                 sx={{ fontSize: "18px", fontWeight: 600, boxShadow: 3, marginTop: 2, paddingTop: 1.75, paddingBottom: 1.75 }}
                                 type="button"
@@ -187,7 +175,7 @@ const Settings: React.FunctionComponent<any> = (token) => {
                         </Grid>
                         <Grid item xs={12}>
                             <Button
-                                sx={{ fontSize: "18px", fontWeight: 600, boxShadow: 3, marginTop: 6, paddingTop: 1.75, paddingBottom: 1.75 }}
+                                sx={{ fontSize: "18px", fontWeight: 600, boxShadow: 3, marginTop: 2, paddingTop: 1.75, paddingBottom: 1.75 }}
                                 type="button"
                                 color="error"
                                 size="large"

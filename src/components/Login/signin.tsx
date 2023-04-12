@@ -29,6 +29,7 @@ export default function SignIn() {
     const [rememberMe, setRememberMe] = useState(false)
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
+    const [resetError, setResetError] = useState('');
 
     const isValidEmail = (email: string) => {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -89,7 +90,7 @@ export default function SignIn() {
                 });
         }
     }
-    
+
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -103,12 +104,14 @@ export default function SignIn() {
     const handlePasswordReset = () => {
         sendPasswordResetEmail(auth, email)
             .then(() => {
-                alert('Password reset email sent!');
+                setResetError('');
                 handleClose();
             })
             .catch((error) => {
-                const errorMessage = error.message;
-                alert(errorMessage);
+                if (error.message === 'Firebase: Error (auth/invalid-email).') {
+                    setResetError("Email not found.");
+                }
+
             });
     }
 
@@ -199,23 +202,30 @@ export default function SignIn() {
                                                 Forgot password?
                                             </Link>
                                             <Dialog open={open} onClose={handleClose}>
-                                                <DialogTitle>Forgot Password</DialogTitle>
-                                                <DialogContent>
-                                                    <TextField
-                                                        autoFocus
-                                                        margin="dense"
-                                                        label="Email"
-                                                        onChange={emailChanged}
-                                                        value={email}
-                                                        id='email'
-                                                        type="email"
-                                                        variant="outlined"
-                                                        fullWidth
-                                                    />
-                                                    <Button variant="contained" fullWidth color="primary" onClick={handlePasswordReset}>
-                                                        Send Reset Email
-                                                    </Button>
-                                                </DialogContent>
+                                                <Box >
+                                                    <DialogTitle>Forgot Password</DialogTitle>
+                                                    <DialogContent>
+                                                        <TextField
+                                                            autoFocus
+                                                            margin="dense"
+                                                            label="Email"
+                                                            onChange={emailChanged}
+                                                            value={email}
+                                                            id='email'
+                                                            type="email"
+                                                            variant="outlined"
+                                                            fullWidth
+                                                        />
+                                                        {resetError && (
+                                                            <Typography color="error" variant="body2">
+                                                                {resetError}
+                                                            </Typography>
+                                                        )}
+                                                        <Button variant="contained" fullWidth sx={{ marginTop: 1 }} onClick={handlePasswordReset}>
+                                                            Send Reset Email
+                                                        </Button>
+                                                    </DialogContent>
+                                                </Box>
                                             </Dialog>
                                         </Grid>
                                         <Grid item>
