@@ -1,4 +1,5 @@
 import * as React from 'react';
+import axios from 'axios';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -13,6 +14,7 @@ import Box from '@mui/material/Box';
 
 export default function Contact() {
     const theme = useTheme();
+    const [successMessage, setSuccessMessage] = useState('');
 
     const [formData, setFormData] = useState({
         name: '',
@@ -27,8 +29,24 @@ export default function Contact() {
 
     const handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
-        // Here, you can send the form data to your email
-        console.log(formData);
+        // Add API post call using axios
+        axios.post('/contact/', formData)
+            .then(response => {
+                if (response.status === 200) {
+                    setSuccessMessage('Email has been sent.');
+                    setFormData({
+                        name: '',
+                        email: '',
+                        message: ''
+                    });
+                } else {
+                    setSuccessMessage('Something went wrong. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                setSuccessMessage('Something went wrong. Please try again.');
+            });
     };
 
     return (
@@ -57,6 +75,7 @@ export default function Contact() {
                     <Typography component="h1" variant="h4" marginBottom={5}>
                         Contact Us
                     </Typography>
+                    <Typography color="success.main">{successMessage}</Typography>
                     <form onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
