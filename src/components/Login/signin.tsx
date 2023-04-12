@@ -14,12 +14,10 @@ import Container from '@mui/material/Container';
 import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import '../../App.css';
-import darkBackground from '../../images/darkTopo.jpg'
-import lightBackground from '../../images/lightTopo.jpg'
 import Paper from '@mui/material/Paper';
 import { useTheme } from '@mui/material';
 import { Navigate } from 'react-router-dom';
-import topo from '../../images/SpoonGraphics-Topographic-Map-4.png'
+import darkBackground from '../../images/darkTopo.jpg';
 
 export default function SignIn() {
     const auth = getAuth()
@@ -126,13 +124,13 @@ export default function SignIn() {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        height: "100vh",
-                        backgroundImage: `url(${topo})`,
-                        backgroundRepeat: 'repeat',
-                        backgroundPosition: "center",
+                        height: '100vh',
+                        backgroundImage: `url(${darkBackground})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
                     }}
                 >
-                    <Container maxWidth="xs">
+                    <Container maxWidth="sm">
                         <Box
                             sx={{
                                 display: 'flex',
@@ -146,7 +144,7 @@ export default function SignIn() {
                             <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
                                 <LockOutlinedIcon />
                             </Avatar>
-                            <Typography component="h1" variant="h5">
+                            <Typography component="h1" variant="h4" marginBottom={5}>
                                 Sign in
                             </Typography>
                             <Box component="form" sx={{ mt: 1 }}>
@@ -154,6 +152,7 @@ export default function SignIn() {
                                     margin="normal"
                                     required
                                     fullWidth
+                                    variant="filled"
                                     onChange={emailChanged}
                                     value={email}
                                     id="email"
@@ -168,6 +167,7 @@ export default function SignIn() {
                                     margin="normal"
                                     required
                                     fullWidth
+                                    variant="filled"
                                     onChange={passwordChanged}
                                     value={password}
                                     name="password"
@@ -185,8 +185,9 @@ export default function SignIn() {
                                 <Button
                                     fullWidth
                                     variant="contained"
+                                    size="large"
                                     onClick={signInWithPassword}
-                                    sx={{ mt: 3, mb: 2 }}
+                                    sx={{ fontSize: "18px", fontWeight: 600, boxShadow: 3, marginTop: 2, paddingTop: 1.75, paddingBottom: 1.75 }}
                                     disabled={!email || !password}
                                 >
                                     Sign In
@@ -211,7 +212,7 @@ export default function SignIn() {
                                                         variant="outlined"
                                                         fullWidth
                                                     />
-                                                    <Button variant="contained" color="primary" onClick={handlePasswordReset}>
+                                                    <Button variant="contained" fullWidth color="primary" onClick={handlePasswordReset}>
                                                         Send Reset Email
                                                     </Button>
                                                 </DialogContent>

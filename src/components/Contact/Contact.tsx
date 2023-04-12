@@ -116,10 +116,11 @@ export default function Contact() {
                             </Grid>
                             <Grid item xs={12}>
                                 <Button
+                                    sx={{ fontSize: "18px", fontWeight: 600, boxShadow: 3, marginTop: 2, paddingTop: 1.75, paddingBottom: 1.75 }}
                                     type="submit"
+                                    size="large"
                                     fullWidth
                                     variant="contained"
-                                    sx={{ mt: 3, mb: 2 }}
                                 >
                                     Send Message
                                 </Button>

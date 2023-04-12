@@ -19,7 +19,7 @@ import '../../App.css';
 import Paper from '@mui/material/Paper';
 import { useTheme } from '@mui/material';
 import { Navigate } from 'react-router-dom';
-import topo from '../../images/SpoonGraphics-Topographic-Map-4.png'
+import darkBackground from '../../images/darkTopo.jpg';
 
 export default function SignUp() {
     const auth = getAuth()
@@ -118,13 +118,13 @@ export default function SignUp() {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        height: "100vh",
-                        backgroundImage: `url(${topo})`,
-                        backgroundRepeat: 'repeat',
-                        backgroundPosition: "center",
+                        height: '100vh',
+                        backgroundImage: `url(${darkBackground})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
                     }}
                 >
-                    <Container component="main" maxWidth="xs">
+                    <Container maxWidth="sm">
                         <Box
                             sx={{
                                 display: 'flex',
@@ -138,13 +138,14 @@ export default function SignUp() {
                             <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
                                 <LockOutlinedIcon />
                             </Avatar>
-                            <Typography component="h1" variant="h5">
+                            <Typography component="h1" variant="h4" marginBottom={5}>
                                 Sign Up
                             </Typography>
                             <TextField
                                 margin="normal"
                                 required
                                 fullWidth
+                                variant="filled"
                                 onChange={usernameRegisterChanged}
                                 value={username}
                                 id="username"
@@ -158,6 +159,7 @@ export default function SignUp() {
                                     margin="normal"
                                     required
                                     fullWidth
+                                    variant="filled"
                                     onChange={emailRegisterChanged}
                                     value={emailr}
                                     id="emailr"
@@ -172,6 +174,7 @@ export default function SignUp() {
                                     margin="normal"
                                     required
                                     fullWidth
+                                    variant="filled"
                                     onChange={passwordRegisterChanged}
                                     value={passwordr}
                                     name="password"
@@ -190,7 +193,7 @@ export default function SignUp() {
                                     fullWidth
                                     variant="contained"
                                     onClick={signUpWithPassword}
-                                    sx={{ mt: 3, mb: 2 }}
+                                    sx={{ fontSize: "18px", fontWeight: 600, boxShadow: 3, marginTop: 2, paddingTop: 1.75, paddingBottom: 1.75 }}
                                 >
                                     Sign Up
                                 </Button>
