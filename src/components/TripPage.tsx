@@ -10,6 +10,7 @@ import ImageUploader from './ImageUploader';
 import topo from '../images/SpoonGraphics-Topographic-Map-4.png'
 import EditIcon from '@mui/icons-material/Edit';
 import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface CardData {
     title: string;
@@ -37,13 +38,14 @@ function formatDate(timestamp: any): string {
 const TripPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const [tripData, setTripData] = useState<CardData | null>(null);
     const card = JSON.parse(localStorage.getItem('card') || '') as CardData | null;
     const token = sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken")
     const [apiResponse, setApiResponse] = useState<string>('');
+    const [loadingExport, setLoadingExport] = useState(false);
     const [isLoading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
-    const [title, setTitle] = useState('');
-    const [tripData, setTripData] = useState<CardData | null>(null);
+    const [title, setTitle] = useState(tripData?.title || ''); // Update this line to set the initial value of the title state
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     useEffect(() => {
@@ -68,6 +70,13 @@ const TripPage = () => {
         };
         fetchTripData();
     }, []);
+
+    // Add this useEffect to set the title state when tripData is updated
+    useEffect(() => {
+        if (tripData) {
+            setTitle(tripData.title);
+        }
+    }, [tripData]);
 
     const handleOpen = () => {
         setOpen(true);
@@ -109,7 +118,7 @@ const TripPage = () => {
     const handleExport = () => {
         try {
             if (card) {
-                setLoading(true);
+                setLoadingExport(true);
                 axios.get(`/trips/${card.id}/export`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -117,7 +126,7 @@ const TripPage = () => {
                 })
                     .then((response) => {
                         console.log(response)
-                        setLoading(false);
+                        setLoadingExport(false);
                         if (response.status === 200) {
                             setApiResponse(response.data.downloadLink);
                             setErrorMessage('');
@@ -126,7 +135,7 @@ const TripPage = () => {
                         }
                     })
                     .catch((error) => {
-                        setLoading(false);
+                        setLoadingExport(false);
                         console.log(error);
                         setErrorMessage('Something went wrong. Please try again.');
                     });
@@ -191,8 +200,8 @@ const TripPage = () => {
                                 </Typography>
                                 <Grid container spacing={2} sx={{ marginTop: 2 }}>
                                     <Grid item xs={4}>
-                                        <Button variant="contained" startIcon={<FileDownloadIcon />} fullWidth onClick={handleExport}>
-                                            Export
+                                        <Button variant="contained" startIcon={<FileDownloadIcon />} fullWidth onClick={handleExport} disabled={loadingExport}>
+                                            {loadingExport ? <CircularProgress size={24} /> : 'Export'}
                                         </Button>
                                     </Grid>
                                     <Grid item xs={4}>
@@ -201,8 +210,10 @@ const TripPage = () => {
                                         </Button>
                                         <Dialog open={open} onClose={handleClose}>
                                             <DialogTitle>Change Title</DialogTitle>
-                                            <TextField label="Title" value={title} onChange={handleTitleChange} />
-                                            <Button onClick={handleSubmit}>Submit</Button>
+                                            <Box p={2}>
+                                                <TextField label="Title" value={title}  onChange={handleTitleChange} fullWidth />
+                                                <Button onClick={handleSubmit} disabled={!title.trim()} fullWidth variant="contained" sx={{ marginTop: 1 }}>Submit</Button>
+                                            </Box>
                                         </Dialog>
                                     </Grid>
                                     <Grid item xs={4}>

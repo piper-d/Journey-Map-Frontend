@@ -3,8 +3,9 @@ import { Container, Grid, Card, CardContent, Typography, Box } from '@mui/materi
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import archive from '../../images/iphoneTesting.png'
-import create from '../../images/iphoneTesting3.png'
+import archive from '../../images/ArchivePage.png'
+import create from '../../images/CreatePage.png'
+import edit from '../../images/EditTrip.png'
 import { useTheme } from '@mui/material/styles';
 
 const cardsData = [
@@ -24,7 +25,7 @@ const cardsData = [
         title: 'Upload Images!',
         description: 'Easily upload images and share them.',
         icon: <AddAPhotoIcon fontSize="large" />,
-        image: 'your-image-url-3',
+        image: edit,
     },
 ];
 
