@@ -222,7 +222,7 @@ const TripPage = () => {
                                         </Button>
                                     </Grid>
                                 </Grid>
-                                <ImageUploader tripId={tripData?.id} />
+                                <ImageUploader tripId={tripData?.id} trip={tripData}/>
                                 {errorMessage && (
                                     <Alert severity="error" sx={{ marginTop: 2 }}>{errorMessage}</Alert>
                                 )}

@@ -4,7 +4,7 @@ import { Button, TextField } from '@mui/material';
 import exifr from 'exifr'
 import { useNavigate } from 'react-router-dom';
 
-const ImageUploader: React.FunctionComponent<any> = (tripId) => {
+const ImageUploader: React.FunctionComponent<any> = ({ tripId, trip }) => {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [location, setLocation] = useState<{ lat?: number; lng?: number }>({});
     const token = sessionStorage.getItem("accessToken");
@@ -13,7 +13,6 @@ const ImageUploader: React.FunctionComponent<any> = (tripId) => {
     const [imageFileName, setImageFileName] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
     const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
-
 
     const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
@@ -26,6 +25,11 @@ const ImageUploader: React.FunctionComponent<any> = (tripId) => {
                     setLocation({ lat: gps.latitude, lng: gps.longitude });
                     setInputCoordinates(false);
                 } else {
+                    if (trip.point_coords && trip.point_coords.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * trip.point_coords.length);
+                        const randomCoords = trip.point_coords[randomIndex];
+                        setLocation({lat: randomCoords._latitude, lng: randomCoords._longitude});
+                    }
                     setInputCoordinates(true);
                 }
             });
@@ -43,7 +47,8 @@ const ImageUploader: React.FunctionComponent<any> = (tripId) => {
                 image: selectedImage,
                 extension: extension ?? ''
             }
-            PutTripData(token, data, tripId.tripId)
+            console.log(data)
+            PutTripData(token, data, tripId)
 
         } catch (error) {
             console.error(error);
@@ -69,7 +74,7 @@ const ImageUploader: React.FunctionComponent<any> = (tripId) => {
             formData.append('longitude', data.longitude);
             formData.append('image', data.image);
             formData.append('extension', data.extension);
-            
+
             await axios.post(`/trips/${tripId}/media`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -125,7 +130,7 @@ const ImageUploader: React.FunctionComponent<any> = (tripId) => {
             {uploadSuccess && (
                 <span>Image has been successfully uploaded!</span>
             )}
-            {inputCoordinates && (
+            {/* {inputCoordinates && (
                 <>
                     <br />
                     <br />
@@ -148,7 +153,7 @@ const ImageUploader: React.FunctionComponent<any> = (tripId) => {
                     <br />
                     <br />
                 </>
-            )}
+            )} */}
             {selectedImage && (
                 <Button variant="contained" onClick={handleSubmit}>
                     Upload Image
