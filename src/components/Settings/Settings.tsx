@@ -13,6 +13,8 @@ const Settings: React.FunctionComponent<any> = (token) => {
     const [email, setEmail] = useState("")
     const auth = getAuth()
     const theme = useTheme();
+    const [message, setMessage] = useState('');
+    const [usernameMessage, setUsernameMessage] = useState('');
 
     const usernameChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(event.target.value)
@@ -22,25 +24,32 @@ const Settings: React.FunctionComponent<any> = (token) => {
         setEmail(event.target.value)
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const data = {
-            username: username
+            username: username,
+        };
+        try {
+            await PutUserData(token, data);
+            setUsernameMessage('Username changed successfully!');
+        } catch (error) {
+            setUsernameMessage('Error updating username.');
         }
-        PutUserData(token, data)
-    }
+    };
+
 
     const handlePasswordChange = () => {
         const auth = getAuth();
         sendPasswordResetEmail(auth, email)
             .then(() => {
-                alert('Password reset email sent!');
+                setMessage('Password reset email sent!');
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                alert(errorMessage);
+                setMessage(errorMessage);
             });
-    }
+    };
+
 
     function logoutUser() {
         signOut(auth).then(() => {
@@ -136,7 +145,7 @@ const Settings: React.FunctionComponent<any> = (token) => {
                     </Typography>
                     <Grid container spacing={4}>
                         <Grid item xs={12}>
-                            <Typography variant="h5" sx={{ fontWeight: "bold", margin: "15px 0 5px"}}>
+                            <Typography variant="h5" sx={{ fontWeight: "bold", margin: "15px 0 5px" }}>
                                 Change Username
                             </Typography>
                             <TextField
@@ -148,6 +157,16 @@ const Settings: React.FunctionComponent<any> = (token) => {
                                 value={username}
                                 onChange={usernameChanged}
                             />
+                            {usernameMessage && (
+                                <Typography
+                                    variant="body1"
+                                    align="center"
+                                    color={usernameMessage === 'Username changed successfully!' ? 'success' : 'error'}
+                                    sx={{ marginBottom: 2 }}
+                                >
+                                    {usernameMessage}
+                                </Typography>
+                            )}
                             <Button
                                 sx={{ fontSize: "18px", fontWeight: 600, boxShadow: 3, marginTop: 2, paddingTop: 1.75, paddingBottom: 1.75 }}
                                 type="submit"
@@ -161,6 +180,16 @@ const Settings: React.FunctionComponent<any> = (token) => {
                             </Button>
                         </Grid>
                         <Grid item xs={12}>
+                            {message && (
+                                <Typography
+                                    variant="body1"
+                                    align="center"
+                                    color={message === 'Password reset email sent!' ? 'success' : 'error'}
+                                    sx={{ marginBottom: 2 }}
+                                >
+                                    {message}
+                                </Typography>
+                            )}
                             <Button
                                 sx={{ fontSize: "18px", fontWeight: 600, boxShadow: 3, marginTop: 2, paddingTop: 1.75, paddingBottom: 1.75 }}
                                 type="button"
@@ -182,7 +211,7 @@ const Settings: React.FunctionComponent<any> = (token) => {
                                 variant="contained"
                                 onClick={handleDeleteAccount}
                                 fullWidth
-                                
+
                             >
                                 Delete Account
                             </Button>

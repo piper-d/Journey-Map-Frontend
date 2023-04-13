@@ -47,8 +47,8 @@ const CardGrid = ({ cards }: CardGridProps) => {
     return (
         <Box
             sx={{
-                backgroundImage: `url(${topo})`,
-                backgroundRepeat: 'repeat',
+                // backgroundImage: `url(${topo})`,
+                // backgroundRepeat: 'repeat', 
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

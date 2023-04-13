@@ -33,22 +33,33 @@ const Dashboard: React.FunctionComponent<any> = (token) => {
 
     if (isLoading) {
         return (
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', mt:5 }}>
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5 }}>
                 <CircularProgress />
             </Box>
         );
     }
 
     return (
-        <Paper>
+        <Paper sx={{
+            backgroundImage: `url(${topo})`,
+            backgroundRepeat: 'repeat',
+            minHeight: '100vh',
+        }}>
             {trips.trips === "you currently have no trips" ? (
-                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 5 }}>
-                    <Typography variant="h5">
+                <Box sx={{
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}>
+                    <Typography variant="h5" color='white' sx={{marginTop: 10}}>
                         Create a trip using our mobile app
                     </Typography>
                 </Box>
             ) : (
+                <Box>
                     <CardGrid cards={trips} />
+                </Box>
             )}
         </Paper>
     );

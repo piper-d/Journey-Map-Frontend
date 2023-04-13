@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, CircularProgress } from '@mui/material';
+
 import exifr from 'exifr'
 import { useNavigate } from 'react-router-dom';
 
@@ -28,7 +29,7 @@ const ImageUploader: React.FunctionComponent<any> = ({ tripId, trip }) => {
                     if (trip.point_coords && trip.point_coords.length > 0) {
                         const randomIndex = Math.floor(Math.random() * trip.point_coords.length);
                         const randomCoords = trip.point_coords[randomIndex];
-                        setLocation({lat: randomCoords._latitude, lng: randomCoords._longitude});
+                        setLocation({ lat: randomCoords._latitude, lng: randomCoords._longitude });
                     }
                     setInputCoordinates(true);
                 }
@@ -86,7 +87,7 @@ const ImageUploader: React.FunctionComponent<any> = ({ tripId, trip }) => {
                 // Refresh the page after a short delay
                 setTimeout(() => {
                     window.location.reload();
-                }, 1000)
+                }, 3000)
 
             });
 
@@ -125,37 +126,20 @@ const ImageUploader: React.FunctionComponent<any> = ({ tripId, trip }) => {
                 </>
             )}
             {loading && (
-                <span>Loading...</span>
-            )}
-            {uploadSuccess && (
-                <span>Image has been successfully uploaded!</span>
-            )}
-            {/* {inputCoordinates && (
                 <>
                     <br />
+                    <CircularProgress />
                     <br />
-                    <TextField
-                        label="Latitude"
-                        type="number"
-                        value={location.lat || ''}
-                        name="lat"
-                        onChange={handleLocationChange}
-                    />
-                    <br />
-                    <br />
-                    <TextField
-                        label="Longitude"
-                        type="number"
-                        value={location.lng || ''}
-                        name="lng"
-                        onChange={handleLocationChange}
-                    />
-                    <br />
+                    <span>Uploading image...</span>
                     <br />
                 </>
-            )} */}
+            )}
+            {!loading && uploadSuccess && (
+                <span>Image has been successfully uploaded!</span>
+            )}
+
             {selectedImage && (
-                <Button variant="contained" onClick={handleSubmit}>
+                <Button variant="contained" onClick={handleSubmit} disabled={loading}>
                     Upload Image
                 </Button>
             )}

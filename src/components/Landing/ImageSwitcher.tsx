@@ -11,13 +11,13 @@ import { useTheme } from '@mui/material/styles';
 const cardsData = [
     {
         title: 'Start Your Trip!',
-        description: 'Time to start your adventure, on this page you can begin tracking your location',
+        description: 'Time to start your adventure, on this page you can begin tracking your location.',
         icon: <PlayCircleFilledIcon fontSize="large" />,
         image: create,
     },
     {
         title: 'View Your Past Trips!',
-        description: 'Relive your memories and view metadata from your trip',
+        description: 'Relive your memories and view metadata from your trip.',
         icon: <InventoryIcon fontSize="large" />,
         image: archive,
     },
@@ -56,9 +56,11 @@ export default function ImageSwitcher() {
                                 <Grid item xs={12} key={index}>
                                     <Card
                                         sx={{
-                                            boxShadow: 'rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px',
+                                            boxShadow: index === activeIndex
+                                                ? 'inset 0 0 0 2px rgba(0, 0, 0, 0.1), inset 0 6px 12px rgba(0, 0, 0, 0.25)'
+                                                : 'rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px',
                                             cursor: 'pointer',
-                                            minHeight: '150px',
+                                            minHeight: '100px',
                                             backgroundColor: index === activeIndex ? theme.palette.action.hover : cardColor,
                                         }}
                                         onClick={() => handleCardClick(index)}
@@ -73,6 +75,8 @@ export default function ImageSwitcher() {
                                             <Typography variant="body1">{card.description}</Typography>
                                         </CardContent>
                                     </Card>
+
+
                                 </Grid>
                             ))}
                         </Grid>

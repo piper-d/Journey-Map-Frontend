@@ -11,6 +11,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import logo from '../../images/JourneyMap.png'
 
 import { SwitchModeButton } from '../SwitchModeButton/SwitchModeButton';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -109,7 +110,6 @@ function ResponsiveAppBar() {
                     <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: navBackgroundColor, boxShadow: 'none' }} elevation={0}>
                         <Container maxWidth="xl">
                             <Toolbar disableGutters>
-                                <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                                 <Typography
                                     variant="h6"
                                     noWrap
@@ -127,7 +127,6 @@ function ResponsiveAppBar() {
                                 >
                                     Journey Map
                                 </Typography>
-
                                 <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                                     <IconButton
                                         size="large"
@@ -169,7 +168,6 @@ function ResponsiveAppBar() {
 
                                     </Menu>
                                 </Box>
-                                <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
                                 <Typography
                                     variant="h5"
                                     noWrap
@@ -194,12 +192,6 @@ function ResponsiveAppBar() {
                                         sx={buttonStyle('/home')}>
                                         <Typography textAlign="center">ARCHIVE</Typography>
                                     </Button>
-                                    {/* <Button
-                                        onClick={about}
-                                        sx={buttonStyle('/about')}
-                                    >
-                                        <Typography textAlign="center">About</Typography>
-                                    </Button> */}
                                     <Button
                                         onClick={contact}
                                         sx={buttonStyle('/contact')}
@@ -212,7 +204,6 @@ function ResponsiveAppBar() {
                                     >
                                         <Typography textAlign="center">Settings</Typography>
                                     </Button>
-
                                 </Box>
                                 <SwitchModeButton />
                                 <Button
@@ -226,119 +217,112 @@ function ResponsiveAppBar() {
                     </AppBar>
                 </>
             ) :
-                <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: navBackgroundColor, boxShadow: 'none' }} elevation={0}>                    <Container maxWidth="xl">
-                    <Toolbar disableGutters>
-                        <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="a"
-                            href="/"
-                            sx={{
-                                mr: 2,
-                                display: { xs: 'none', md: 'flex' },
-                                fontFamily: 'monospace',
-                                fontWeight: 700,
-                                letterSpacing: '.3rem',
-                                color: 'inherit',
-                                textDecoration: 'none',
-                            }}
-                        >
-                            Journey Map
-                        </Typography>
-
-                        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                            <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleOpenNavMenu}
-                                color="inherit"
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorElNav}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'left',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'left',
-                                }}
-                                open={Boolean(anchorElNav)}
-                                onClose={handleCloseNavMenu}
+                <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: navBackgroundColor, boxShadow: 'none' }} elevation={0}>
+                    <Container maxWidth="xl">
+                        <Toolbar disableGutters>
+                            <Typography
+                                variant="h6"
+                                noWrap
+                                component="a"
+                                href="/"
                                 sx={{
-                                    display: { xs: 'block', md: 'none' },
+                                    mr: 2,
+                                    display: { xs: 'none', md: 'flex' },
+                                    fontFamily: 'monospace',
+                                    fontWeight: 700,
+                                    letterSpacing: '.3rem',
+                                    color: 'inherit',
+                                    textDecoration: 'none',
                                 }}
                             >
-                                {/* <MenuItem onClick={about}>
+                                Journey Map
+                            </Typography>
+
+                            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                                <IconButton
+                                    size="large"
+                                    aria-label="account of current user"
+                                    aria-controls="menu-appbar"
+                                    aria-haspopup="true"
+                                    onClick={handleOpenNavMenu}
+                                    color="inherit"
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                                <Menu
+                                    id="menu-appbar"
+                                    anchorEl={anchorElNav}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'left',
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'left',
+                                    }}
+                                    open={Boolean(anchorElNav)}
+                                    onClose={handleCloseNavMenu}
+                                    sx={{
+                                        display: { xs: 'block', md: 'none' },
+                                    }}
+                                >
+                                    {/* <MenuItem onClick={about}>
                                     <Typography textAlign="center">About</Typography>
                                 </MenuItem> */}
-                                <MenuItem onClick={contact}>
+                                    <MenuItem onClick={contact}>
+                                        <Typography textAlign="center">Contact Us</Typography>
+                                    </MenuItem>
+                                    <MenuItem onClick={login}>
+                                        <Typography textAlign="center">Login</Typography>
+                                    </MenuItem>
+                                    <MenuItem onClick={register}>
+                                        <Typography textAlign="center">Register</Typography>
+                                    </MenuItem>
+                                </Menu>
+                            </Box>
+                            <Typography
+                                variant="h5"
+                                noWrap
+                                component="a"
+                                href=""
+                                sx={{
+                                    mr: 2,
+                                    display: { xs: 'flex', md: 'none' },
+                                    flexGrow: 1,
+                                    fontFamily: 'monospace',
+                                    fontWeight: 700,
+                                    letterSpacing: '.3rem',
+                                    color: 'inherit',
+                                    textDecoration: 'none',
+                                }}
+                            >
+                                Journey Map
+                            </Typography>
+                            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                                <Button
+                                    onClick={contact}
+                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                >
                                     <Typography textAlign="center">Contact Us</Typography>
-                                </MenuItem>
-                                <MenuItem onClick={login}>
-                                    <Typography textAlign="center">Login</Typography>
-                                </MenuItem>
-                                <MenuItem onClick={register}>
-                                    <Typography textAlign="center">Register</Typography>
-                                </MenuItem>
-                            </Menu>
-                        </Box>
-                        <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-                        <Typography
-                            variant="h5"
-                            noWrap
-                            component="a"
-                            href=""
-                            sx={{
-                                mr: 2,
-                                display: { xs: 'flex', md: 'none' },
-                                flexGrow: 1,
-                                fontFamily: 'monospace',
-                                fontWeight: 700,
-                                letterSpacing: '.3rem',
-                                color: 'inherit',
-                                textDecoration: 'none',
-                            }}
-                        >
-                            Journey Map
-                        </Typography>
-                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                            {/* <Button
-                                onClick={about}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                About
-                            </Button> */}
-                            <Button
-                                onClick={contact}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                Contact Us
-                            </Button>
-                            <Button
-                                onClick={login}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                Login
-                            </Button>
-                            <Button
-                                onClick={register}
-                                
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                Register
-                            </Button>
-                        </Box>
-                        <SwitchModeButton />
-                    </Toolbar>
-                </Container>
+                                </Button>
+                                <Button
+                                    onClick={login}
+                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                >
+                                    <Typography textAlign="center">LOGIN</Typography>
+                                </Button>
+                                <Button
+                                    onClick={register}
+
+                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                >
+                                    <Typography textAlign="center">REGISTER</Typography>
+                                </Button>
+                            </Box>
+                            <SwitchModeButton />
+                        </Toolbar>
+                    </Container>
                 </AppBar>
             }
         </>
