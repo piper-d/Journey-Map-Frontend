@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Button, TextField, CircularProgress } from '@mui/material';
-
+import { Button, TextField, CircularProgress, Box } from '@mui/material';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import exifr from 'exifr'
 import { useNavigate } from 'react-router-dom';
 
@@ -106,22 +106,20 @@ const ImageUploader: React.FunctionComponent<any> = ({ tripId, trip }) => {
     };
 
     return (
-        <div>
+        <>
             <input
                 ref={inputFileRef}
                 type="file"
                 onChange={handleImageChange}
                 style={{ display: 'none' }}
             />
-            <Button variant="outlined" onClick={handleButtonClick}>
+            <Button variant="contained" startIcon={<AddPhotoAlternateIcon />} sx={{ mb: 1 }} fullWidth onClick={handleButtonClick}>
                 Choose Image
             </Button>
             {imageFileName && (
                 <>
                     <br />
-                    <br />
                     <span>Selected image: {imageFileName}</span>
-                    <br />
                     <br />
                 </>
             )}
@@ -139,11 +137,11 @@ const ImageUploader: React.FunctionComponent<any> = ({ tripId, trip }) => {
             )}
 
             {selectedImage && (
-                <Button variant="contained" onClick={handleSubmit} disabled={loading}>
+                <Button variant="contained" fullWidth sx={{mt: 1}} onClick={handleSubmit} disabled={loading}>
                     Upload Image
                 </Button>
             )}
-        </div>
+        </>
     );
 };
 

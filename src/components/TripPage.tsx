@@ -199,12 +199,24 @@ const TripPage = () => {
                                     {formatDate(tripData?.details.start_time)}
                                 </Typography>
                                 <Grid container spacing={2} sx={{ marginTop: 2 }}>
-                                    <Grid item xs={4}>
+                                    <Grid item xs={3}>
+                                        <ImageUploader tripId={tripData?.id} trip={tripData} />
+                                        {errorMessage && (
+                                            <Alert severity="error" sx={{ marginTop: 2 }}>{errorMessage}</Alert>
+                                        )}
+                                        {apiResponse && (
+                                            <Typography variant="body1" sx={{ marginTop: 2 }} color="text.secondary">
+                                                {/* <VideoEmbed url={apiResponse}/> */}
+                                                Download Link: <a href={apiResponse}>{apiResponse}</a>
+                                            </Typography>
+                                        )}
+                                    </Grid>
+                                    <Grid item xs={3}>
                                         <Button variant="contained" startIcon={<FileDownloadIcon />} fullWidth onClick={handleExport} disabled={loadingExport}>
                                             {loadingExport ? <CircularProgress size={24} /> : 'Export'}
                                         </Button>
                                     </Grid>
-                                    <Grid item xs={4}>
+                                    <Grid item xs={3}>
                                         <Button variant="contained" startIcon={<EditIcon />} fullWidth onClick={handleOpen}>
                                             Edit
                                         </Button>
@@ -216,22 +228,13 @@ const TripPage = () => {
                                             </Box>
                                         </Dialog>
                                     </Grid>
-                                    <Grid item xs={4}>
+                                    <Grid item xs={3}>
                                         <Button variant="contained" color="error" startIcon={<DeleteForeverIcon />} fullWidth onClick={handleDelete}>
                                             Delete
                                         </Button>
                                     </Grid>
                                 </Grid>
-                                <ImageUploader tripId={tripData?.id} trip={tripData}/>
-                                {errorMessage && (
-                                    <Alert severity="error" sx={{ marginTop: 2 }}>{errorMessage}</Alert>
-                                )}
-                                {apiResponse && (
-                                    <Typography variant="body1" sx={{ marginTop: 2 }} color="text.secondary">
-                                        {/* <VideoEmbed url={apiResponse}/> */}
-                                        Download Link: <a href={apiResponse}>{apiResponse}</a>
-                                    </Typography>
-                                )}
+
                             </>
                         ) : (
                             <Typography variant="body1" color="text.secondary">

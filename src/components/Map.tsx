@@ -30,8 +30,6 @@ const Map: React.FunctionComponent<any> = (trip) => {
             for (let i = 0; i < Object.keys(tripData.media).length; i++) {
                 const mediaCoords = Object.keys(tripData.media)[i];
                 const media = tripData.media[mediaCoords];
-
-                console.log(media[0])
                 
                 if(media.length != 0) {
                     const formattedKey = {
